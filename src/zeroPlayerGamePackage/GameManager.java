@@ -6,7 +6,7 @@ public class GameManager {
 
 	public static void main(String[] args) {
 		
-		Regiment tester = new Regiment();
+		Regiment tester = new Regiment(0);
 		tester.setPositionX(5);
 		tester.setPositionY(1);
 		System.out.println(tester.directionToSquare("N").positionX);
@@ -16,9 +16,4 @@ public class GameManager {
 
 	}  // end main
 		
-		
-
-
-		
-
-}
+}  // end GameManager
