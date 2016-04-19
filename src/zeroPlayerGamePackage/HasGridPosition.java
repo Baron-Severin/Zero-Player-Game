@@ -24,7 +24,7 @@ public class HasGridPosition {
 		positionY = newY;
 	}
 
-	public PositionObject directionToSquare(String direction) {
+	public PositionObject directionToPositionObject(String direction) {
 		
 		int checkX = 0;
 		int checkY = 0;
@@ -68,25 +68,20 @@ public class HasGridPosition {
 		}  // end switch
 		
 		PositionObject position = new PositionObject(checkX, checkY);
+		System.out.println("direction " + direction + " = " + checkX + ", " + checkY);
 		
 		return position;
 		
 	}  // end directionToSquare()
 	
-	public Boolean isDirectionOpen(String direction) {
-		
-		return(BoardBuilder.isSquareOpen(getPositionX(), getPositionY()));	
-		
-	}  // end isDirectionOpen
-	
-	public HashMap<String, Boolean> checkOpenDirections() {
+	public ArrayList<String> checkOpenDirections() {
 		ArrayList<String> directions = BoardBuilder.eightDirections();
-		HashMap<String, Boolean> openDirections = new HashMap<String, Boolean>();
+		ArrayList<String> openDirections = new ArrayList<String>();
 		for (int i = 0; i < directions.size(); i++) {
-
-			if (isDirectionOpen(directions.get(i)) == true){
 			
-			    openDirections.put(directions.get(i), isDirectionOpen(directions.get(i)));
+			if (BoardBuilder.isSquareOpen(directionToPositionObject(directions.get(i))) == true){
+			
+			    openDirections.add(directions.get(i));
 			
 			}  // end if statement
 			

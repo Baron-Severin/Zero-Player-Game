@@ -1,38 +1,42 @@
 package zeroPlayerGamePackage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BoardBuilder {
 	
 	public final static int boardWidth = 20;
 	public final static int boardHeight = 10;
 	
-	private static ArrayList<String> occupiedSquares = new ArrayList<String>();
+	private static ArrayList<PositionObject> occupiedSquares = new ArrayList<PositionObject>();
+	
+	static HashMap<String, PositionObject> team0RegimentLocations = new HashMap<String, PositionObject>();
+	static HashMap<String, PositionObject> team1RegimentLocations = new HashMap<String, PositionObject>();
 
-	public static Boolean isSquareOpen(int positionX, int positionY) {
-		String stringGrid = positionX + ", " + positionY;
-		if (occupiedSquares.contains(stringGrid) || positionX > boardWidth || positionX < 0 
-				|| positionY > boardHeight || positionY < 0) {
+	
+	public static Boolean isSquareOpen(PositionObject position) {
+		if (occupiedSquares.contains(position) || position.positionX > boardWidth 
+				|| position.positionX < 0 || position.positionY > boardHeight 
+				|| position.positionY < 0) {
 			return false;
 		} else {
+			System.out.println("Position " + position.positionX + ", " + position.positionY + " is open");
 			return true;
 		}
 	}  // end isSquareOpen
 	
-	public static void addToOccupiedSquares(int positionX, int positionY) {
-		if (isSquareOpen(positionX, positionY)==true){
-		    String stringGrid = positionX + ", " + positionY;
-		    occupiedSquares.add(stringGrid);
+	public static void addToOccupiedSquares(PositionObject position) {
+		if (isSquareOpen(position)==true){
+		    occupiedSquares.add(position);
 		} else {
 	    	System.out.println("Position passed to BoardBuilder.addToOccupiedSquares already found to be occupied by BoardBuilder.isSquareOpen");
 	    	new Exception().printStackTrace();
 		}
 	}  // end addToOccupiedSquares
 	
-	public static void removeFromOccupiedSquares(int positionX, int positionY) {
-		if (isSquareOpen(positionX, positionY)==false){
-		    String stringGrid = positionX + ", " + positionY;
-		    occupiedSquares.remove(stringGrid);
+	public static void removeFromOccupiedSquares(PositionObject position) {
+		if (isSquareOpen(position)==false){
+		    occupiedSquares.remove(position);
 		} else {
 	    	System.out.println("Position passed to BoardBuilder.removeFromOccupiedSquares not found to be occupied by BoardBuilder.isSquareOpen");
 	    	new Exception().printStackTrace();
@@ -49,7 +53,8 @@ public class BoardBuilder {
 		directions.add("SW");
 		directions.add("W");
 		directions.add("NW");
+		System.out.println(directions);
 		return directions;
-	}
+	};  // end eightDirections
 	
-}
+}  // end BoardBuilder
