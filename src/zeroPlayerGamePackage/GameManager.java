@@ -25,22 +25,26 @@ public class GameManager {
 		
 		
 		UnitLocationList team0 = new UnitLocationList();
+		UnitLocationList team1 = new UnitLocationList();
 		Regiment tester0 = new Regiment(0);
-		Regiment tester1 = new Regiment(0);
+		Regiment tester1 = new Regiment(1);
 		
 		PositionObject position0 = new PositionObject(10, 10);
 		PositionObject position1 = new PositionObject(11, 10);
 		
 		team0.addUnit(tester0, position0);
-		team0.addUnit(tester1, position1);
+		team1.addUnit(tester1, position1);
 		
-		System.out.println(team0.getRegimentList());
-		System.out.println(team0.getRegimentPositions());
+//		System.out.println(team0.getRegimentList());
+//		System.out.println(team0.getRegimentPositions());
+//		
+//		for (int i = 0; i< team0.getRegimentList().size(); i++) {
+//			System.out.print("Regiment # " + team0.getRegimentList().get(i).getNumber());
+//			System.out.println(", Position " + team0.getRegimentPositions().get(i).getPositionString());
+//		}
 		
-		for (int i = 0; i< team0.getRegimentList().size(); i++) {
-			System.out.print("Regiment # " + team0.getRegimentList().get(i).getNumber());
-			System.out.println(", Position " + team0.getRegimentPositions().get(i).getPositionString());
-		}
+		System.out.println(team1.whereIsUnit(1).getPositionString());
+		System.out.println(team0.whereIsUnit(tester0).getPositionString());
 		
 		
 		

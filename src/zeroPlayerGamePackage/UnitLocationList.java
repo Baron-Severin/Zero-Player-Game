@@ -47,11 +47,42 @@ public class UnitLocationList {
 //	removeUnit() {
 //		
 //	}
-//	
-//	whereIsUnit() {
-//		
-//	}
-//	
+	
+	public PositionObject whereIsUnit(Regiment regiment) {
+		if (!regimentList.contains(regiment)) {
+			System.out.println("Error: Regiment passed to UnitLocationList.whereIsUnit not "
+					+ "found within regimentList");
+			new Exception().printStackTrace();
+		}  // end if statement
+		
+		int listPosition = regimentList.indexOf(regiment);
+		return regimentPositions.get(listPosition);
+		
+	}  // end whereIsUnit(Regiment)
+	
+	public PositionObject whereIsUnit (int regimentNumber) {
+		Regiment regiment = new Regiment(99);
+		for (int i = 0; i < regimentList.size(); i++) {
+			
+			if (regimentList.get(i).getNumber() == regimentNumber) {
+				
+				regiment = regimentList.get(i);
+				
+			}  // end if statement
+		    
+		}  // end for loop
+		
+		if (regiment.getTeam() == 99) {
+			System.out.println("Error: Regiment.Number passed to UnitLocationList.whereIsUnit not "
+					+ "found within regimentList");
+			new Exception().printStackTrace();
+		}  // end if statement
+		
+		int listPosition = regimentList.indexOf(regiment);
+		return regimentPositions.get(listPosition);
+		
+	}  // end whereIsUnit(regimentNumber)
+	
 //	isSquareOccupied() {
 //		
 //	}
