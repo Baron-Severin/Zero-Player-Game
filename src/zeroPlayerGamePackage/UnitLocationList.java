@@ -4,20 +4,20 @@ import java.util.ArrayList;
 
 public class UnitLocationList {
 	
-	private ArrayList<Regiment> regimentNames = new ArrayList<Regiment>();
+	private ArrayList<Regiment> regimentList = new ArrayList<Regiment>();
 	private ArrayList<PositionObject> regimentPositions = new ArrayList<PositionObject>();
 	
-	public ArrayList<Regiment> getRegimentNames() {
-		return regimentNames;
-	}  // end getRegimentNames
+	public ArrayList<Regiment> getRegimentList() {
+		return regimentList;
+	}  // end getregimentList
 
 	public ArrayList<PositionObject> getRegimentPositions() {
 		return regimentPositions;
 	}  // end getRegimentPositions
 	
 	public void addUnit(Regiment regiment, PositionObject position) {
-		if (regimentNames.contains(regiment)) {
-			System.out.println("UnitLocationList.addUnit Error: regimentNames already contains " + regiment);
+		if (regimentList.contains(regiment)) {
+			System.out.println("UnitLocationList.addUnit Error: regimentList already contains " + regiment);
 		}  // end if statement
 		
 		else if (regimentPositions.contains(position)) {
@@ -25,7 +25,7 @@ public class UnitLocationList {
 		}  // end else if statement
 		
 		else {
-			regimentNames.add(regiment);
+			regimentList.add(regiment);
 			regimentPositions.add(position);
 		}  // end else statement
 		
@@ -33,9 +33,9 @@ public class UnitLocationList {
 	
 	public void moveUnit(Regiment regiment, PositionObject position) {
 		
-		for (int i = 0; i < regimentNames.size(); i++) {
+		for (int i = 0; i < regimentList.size(); i++) {
 			
-			if (regimentNames.get(i) == regiment) {
+			if (regimentList.get(i) == regiment) {
 				regimentPositions.set(i, position);
 				break;
 			}  // end if statement

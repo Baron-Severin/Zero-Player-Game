@@ -15,12 +15,12 @@ public class BoardBuilder {
 
 	
 	public static Boolean isSquareOpen(PositionObject position) {
-		if (occupiedSquares.contains(position) || position.positionX > boardWidth 
-				|| position.positionX < 0 || position.positionY > boardHeight 
-				|| position.positionY < 0) {
+		if (occupiedSquares.contains(position) || position.getPositionX() > boardWidth 
+				|| position.getPositionX() < 0 || position.getPositionY() > boardHeight 
+				|| position.getPositionY() < 0) {
 			return false;
 		} else {
-			System.out.println("Position " + position.positionX + ", " + position.positionY + " is open");
+			System.out.println("Position " + position.getPositionX() + ", " + position.getPositionY() + " is open");
 			return true;
 		}
 	}  // end isSquareOpen
