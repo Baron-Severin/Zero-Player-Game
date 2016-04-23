@@ -46,10 +46,14 @@ public class GameManager {
 		System.out.println(team1.whereIsUnit(1).getPositionString());
 		System.out.println(team0.whereIsUnit(tester0).getPositionString());
 		
+		team0.removeUnit(position0);
+		
+		System.out.println(team0.isPositionOccupiedByTeam(10, 10));
+		System.out.println(team1.isPositionOccupiedByTeam(11, 10));
 		
 		
 		// END TEST CODE
 
 	}  // end main
-		
+			
 }  // end GameManager

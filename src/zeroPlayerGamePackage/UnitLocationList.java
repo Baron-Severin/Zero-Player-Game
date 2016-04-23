@@ -44,9 +44,43 @@ public class UnitLocationList {
 		
 	}  // end moveUnit
 	
-//	removeUnit() {
-//		
-//	}
+	public void removeUnit(Regiment regiment) {
+		
+		if (!regimentList.contains(regiment)) {
+			
+		    System.out.println("Error: Regiment passed to UnitLocationList " + this 
+		    		+ ".removeUnit not found within regimentList");
+		    new Exception().printStackTrace();
+		    
+		}  else {
+			
+			int index = regimentList.indexOf(regiment);
+			regimentList.remove(regiment);
+			regimentPositions.remove(index);
+			regiment = null;
+			
+		}  // end if statement
+		
+	}  // end removeUnit
+	
+	public void removeUnit(PositionObject position) {
+		
+		if (!regimentPositions.contains(position)) {
+			
+		    System.out.println("Error: PositionObject passed to UnitLocationList " + this 
+		    		+ ".removeUnit not found within regimentList");
+		    new Exception().printStackTrace();
+		    
+		}  else {
+			
+			int index = regimentPositions.indexOf(position);
+			regimentPositions.remove(position);
+			regimentList.remove(index);
+			// TODO: this method does not open Regiment for garbage collection
+			
+		}  // end if statement
+		
+	}  // end removeUnit
 	
 	public PositionObject whereIsUnit(Regiment regiment) {
 		if (!regimentList.contains(regiment)) {
@@ -83,8 +117,35 @@ public class UnitLocationList {
 		
 	}  // end whereIsUnit(regimentNumber)
 	
-//	isSquareOccupied() {
-//		
-//	}
+	public Boolean isPositionOccupiedByTeam (PositionObject position) {
+		
+		if (regimentPositions.contains(position)) {
+			
+			return true;
+			
+		}  else {
+			
+			return false;
+			
+		}  // end if statement
+		
+	}  // end isSquareOccupiedByTeam
+
+	public Boolean isPositionOccupiedByTeam (int positionX, int positionY) {
+		
+		for (int i = 0; i < regimentPositions.size(); i++) {
+			
+			if (regimentPositions.get(i).getPositionX() == positionX 
+					&& regimentPositions.get(i).getPositionY() == positionY) {
+				
+				return true;
+				
+			}  // end if statement
+		
+		}  // end for loop
+		
+		return false;
+		
+	}  // end isSquareOccupiedByTeam
 	
 }  // end UnitLocationList
