@@ -5,8 +5,8 @@ import java.util.HashMap;
 
 public class BoardBuilder {
 	
-	public final static int boardWidth = 20;
-	public final static int boardHeight = 10;
+	public final static int BOARD_WIDTH = 20;
+	public final static int BOARD_HEIGHT = 10;
 	
 	private static ArrayList<PositionObject> occupiedSquares = new ArrayList<PositionObject>();
 	
@@ -15,8 +15,8 @@ public class BoardBuilder {
 
 	
 	public static Boolean isSquareOpen(PositionObject position) {
-		if (occupiedSquares.contains(position) || position.getPositionX() > boardWidth 
-				|| position.getPositionX() < 0 || position.getPositionY() > boardHeight 
+		if (occupiedSquares.contains(position) || position.getPositionX() > BOARD_WIDTH 
+				|| position.getPositionX() < 0 || position.getPositionY() > BOARD_HEIGHT 
 				|| position.getPositionY() < 0) {
 			return false;
 		} else {

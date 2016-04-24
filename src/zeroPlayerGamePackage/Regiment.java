@@ -48,13 +48,15 @@ public class Regiment extends HasGridPosition {
 		return this.number;
 	}
 	
+	public int getTeam() {
+		return this.team;
+	}
+	
 	public void setTeam(int team) {
 		this.team = team;
 	}
 	
-	public int getTeam() {
-		return this.team;
-	}
+
 	
 
 	

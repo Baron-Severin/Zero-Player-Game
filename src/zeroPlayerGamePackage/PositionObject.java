@@ -6,37 +6,35 @@ public class PositionObject {
 		positionX = X;
 		positionY = Y;
 		
-//		System.out.println(positionX);
-//		System.out.println(positionY);
-	};
+	}  // end constructor
 
 	private int positionX;
 	private int positionY;
 	
 	public int getPositionX() {
 		return positionX;
-	};
+	}  // end getPositionX
 	
 	public int getPositionY() {
 		return positionY;
 		
-	};
+	}  // end getPositionY
 	
 	public void setPositionX (int position) {
-		positionX = position;
-	}
+		this.positionX = position;
+	}  // end setPositionX
 	
 	public void setPositionY (int position) {
-		positionY = position;
-	}
+		this.positionY = position;
+	}  // end setPositionY
 	
 	public void setPosition (PositionObject position) {
-		positionX = position.getPositionX();
-		positionY = position.getPositionY();
-	}
+		this.positionX = position.getPositionX();
+		this.positionY = position.getPositionY();
+	}  // end setPosition
 	
 	public String getPositionString() {
 		return (this.getPositionX() + ", " + this.getPositionY());
-	}
+	}  // end getPositionString
 	
 }  // end PositionObject

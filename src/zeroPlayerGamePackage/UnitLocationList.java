@@ -4,8 +4,16 @@ import java.util.ArrayList;
 
 public class UnitLocationList {
 	
+	public UnitLocationList(int team) {
+		super();
+		this.team = team;
+	}
+	
+	private int team;
+
 	private ArrayList<Regiment> regimentList = new ArrayList<Regiment>();
 	private ArrayList<PositionObject> regimentPositions = new ArrayList<PositionObject>();
+	private ArrayList<Base> ourBases = new ArrayList<Base>();
 	
 	public ArrayList<Regiment> getRegimentList() {
 		return regimentList;
@@ -147,5 +155,19 @@ public class UnitLocationList {
 		return false;
 		
 	}  // end isSquareOccupiedByTeam
+	
+	public void addBase(PositionObject position) {
+		
+		Base base = new Base(team);
+		base.setPositionWithPositionObject(position);
+		
+		ourBases.add(base);
+		
+	}  // end addBase
+	
+	public ArrayList<Base> getBases(){
+		return this.ourBases;
+	}
+	 
 	
 }  // end UnitLocationList

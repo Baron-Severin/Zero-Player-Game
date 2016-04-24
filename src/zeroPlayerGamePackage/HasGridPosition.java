@@ -16,12 +16,27 @@ public class HasGridPosition {
 		return positionY;
 	}
 	
+	public PositionObject getPositionObject() {
+		PositionObject position = new PositionObject(positionX, positionY);
+		return position;
+	}
+	
 	public void setPositionX(int newX) {
-		positionX = newX;
+		this.positionX = newX;
 	}
 	
 	public void setPositionY(int newY) {
-		positionY = newY;
+		this.positionY = newY;
+	}
+	
+	public void setPosition(int newX, int newY) {
+		this.positionX = newX;
+		this.positionY = newY;
+	}
+	
+	public void setPositionWithPositionObject(PositionObject position) {
+		this.positionX = position.getPositionX();
+		this.positionY = position.getPositionY();
 	}
 
 	public PositionObject directionToPositionObject(String direction) {
