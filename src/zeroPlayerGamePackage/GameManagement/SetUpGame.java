@@ -2,10 +2,15 @@ package zeroPlayerGamePackage.GameManagement;
 
 import java.util.ArrayList;
 
+import zeroPlayerGamePackage.Base;
 import zeroPlayerGamePackage.BoardBuilder;
 import zeroPlayerGamePackage.PositionObject;
 
 public class SetUpGame {
+	
+	private ArrayList<Base> team0Bases;
+	private ArrayList<Base> team1Bases;
+	private ArrayList<PositionObject> usedPositions = new ArrayList<PositionObject>();
 
 	public ArrayList<PositionObject> placeBases(int objectivesPerTeam) {
 
@@ -42,5 +47,32 @@ public class SetUpGame {
 
 		PositionObject position = new PositionObject(positionX, positionY);
 		return position;
+		
 	}  // end generateRandomPosition
-}
+	
+	public void setTeam0Bases(ArrayList<Base> bases) {
+		team0Bases = bases;
+		System.out.println(team0Bases);
+	}  // end setTeam0Bases
+	
+	public void setTeam1Bases(ArrayList<Base> bases) {
+		team1Bases = bases;
+	}  // end setTeam1Bases
+	
+	public void createRegimentsForTeam(int team, int regiments) {
+		int nextBase = 0;
+		
+		for (int i = 0; i < regiments; i++) {
+			/* 
+			 *  find nearest open space by base
+			 *  place regiment there
+			 *  add regiment to appropriate lists
+			 */
+			nextBase ++;
+		}  // end for loop
+		
+	}  // end createRegimentsForTeam
+	
+
+		
+}  // end SetUpGame

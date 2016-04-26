@@ -167,7 +167,6 @@ public class UnitLocationList {
 	
 	public ArrayList<Base> getBases(){
 		return this.ourBases;
-	}
-	 
+	}  // end getBases	 
 	
 }  // end UnitLocationList

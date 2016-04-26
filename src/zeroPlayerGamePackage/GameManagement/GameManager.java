@@ -12,6 +12,7 @@ public class GameManager {
 		
         SetUpGame setup = new SetUpGame();
         
+        // UnitLocationList(team)
 		UnitLocationList team0 = new UnitLocationList(0);
 		UnitLocationList team1 = new UnitLocationList(1);
 		
@@ -25,6 +26,18 @@ public class GameManager {
 		}  // end while loop
 		
 		bases = null;
+		
+		
+		
+		/*
+		 *  position team0.suggestRegimentPlacement()
+		 *  if (!team0.isPositionOccupiedByTeam && !team1.isPositionOccupiedByTeam){
+		 *     placeUnit()
+		 *     } else {
+		 *     unplaceableLocationList.add(position)
+		 *     
+		 *     (after all are placed) - unplaceableLocationList = null;
+		 */
 		
 		
 		
