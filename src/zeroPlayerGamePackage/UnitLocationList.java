@@ -14,6 +14,7 @@ public class UnitLocationList {
 	private ArrayList<Regiment> regimentList = new ArrayList<Regiment>();
 	private ArrayList<PositionObject> regimentPositions = new ArrayList<PositionObject>();
 	private ArrayList<Base> ourBases = new ArrayList<Base>();
+	private ArrayList<PositionObject> basePositions = new ArrayList<PositionObject>();
 	
 	public ArrayList<Regiment> getRegimentList() {
 		return regimentList;
@@ -162,11 +163,16 @@ public class UnitLocationList {
 		base.setPositionWithPositionObject(position);
 		
 		ourBases.add(base);
+		basePositions.add(position);
 		
 	}  // end addBase
 	
 	public ArrayList<Base> getBases(){
 		return this.ourBases;
 	}  // end getBases	 
+	
+	public ArrayList<PositionObject> getBasePositions() {
+		return this.basePositions;
+	} // end getBasePositions
 	
 }  // end UnitLocationList

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import zeroPlayerGamePackage.BoardBuilder;
 import zeroPlayerGamePackage.PositionObject;
 import zeroPlayerGamePackage.UnitLocationList;
+import zeroPlayerGamePackage.Graphics.ConsoleLogger;
 
 public class GameManager {
 
@@ -27,7 +28,12 @@ public class GameManager {
 		
 		bases = null;
 		
+		ConsoleLogger console = new ConsoleLogger();
 		
+		console.draw(team0.getBasePositions(), team1.getBasePositions(), 
+				team0.getRegimentPositions(), team1.getRegimentPositions());
+		
+
 		
 		/*
 		 *  position team0.suggestRegimentPlacement()

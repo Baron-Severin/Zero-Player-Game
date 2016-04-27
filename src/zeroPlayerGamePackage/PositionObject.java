@@ -1,5 +1,7 @@
 package zeroPlayerGamePackage;
 
+import java.util.ArrayList;
+
 public class PositionObject {
 
 	public PositionObject(int X, int Y) {
@@ -33,8 +35,33 @@ public class PositionObject {
 		this.positionY = position.getPositionY();
 	}  // end setPosition
 	
-	public String getPositionString() {
+	public String getPositionString () {
 		return (this.getPositionX() + ", " + this.getPositionY());
 	}  // end getPositionString
+	
+	public Boolean positionEquality (PositionObject position) {
+		if (position.getPositionX() == positionX && position.getPositionY() == positionY) {
+			return true;
+		} else {
+			return false;
+		}  // end if statement
+	}  // end positionEquality
+	
+	public Boolean containsPositionEquality (ArrayList<PositionObject> list) {
+		
+		for (int i = 0; i < list.size(); i++) {
+			
+			if (positionEquality(list.get(i))) {
+				
+				return true;
+				
+			}  // end if statement
+			
+		}  // end for loop
+		
+		return false;
+		
+	}  // end containsPositionEquality
+	
 	
 }  // end PositionObject
