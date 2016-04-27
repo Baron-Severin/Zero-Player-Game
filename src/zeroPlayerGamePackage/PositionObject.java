@@ -2,7 +2,7 @@ package zeroPlayerGamePackage;
 
 import java.util.ArrayList;
 
-public class PositionObject {
+public class PositionObject extends HasGridPosition {
 
 	public PositionObject(int X, int Y) {
 		positionX = X;

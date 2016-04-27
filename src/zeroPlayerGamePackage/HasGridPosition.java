@@ -83,7 +83,6 @@ public class HasGridPosition {
 		}  // end switch
 		
 		PositionObject position = new PositionObject(checkX, checkY);
-		System.out.println("direction " + direction + " = " + checkX + ", " + checkY);
 		
 		return position;
 		

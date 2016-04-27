@@ -53,7 +53,6 @@ public class BoardBuilder {
 		directions.add("SW");
 		directions.add("W");
 		directions.add("NW");
-		System.out.println(directions);
 		return directions;
 	};  // end eightDirections
 	

@@ -30,6 +30,24 @@ public class SetUpGame {
 				
 			}  // end for loop
 			
+			ArrayList<String> directions = BoardBuilder.eightDirections();
+			for (int i = 0; i < directions.size(); i++) {
+				
+				PositionObject tempPosition = position.directionToPositionObject(directions.get(i));
+				
+				for (int h = 0; h < usedPositions.size(); h++) {
+				
+					if(usedPositions.get(h).getPositionX() == tempPosition.getPositionX() 
+							&& usedPositions.get(h).getPositionY() == tempPosition.getPositionY()) {
+						
+						positionIsUnused = false;
+						
+					}  // end if statement
+					
+				}  // end for loop
+				
+			}  // end for loop
+			
 			if (positionIsUnused == true) {
 				usedPositions.add(position);
 			}  // end if statement
@@ -42,8 +60,8 @@ public class SetUpGame {
 	
 	public PositionObject generateRandomLocation() {
 		
-		int positionX = (int) Math.round((BoardBuilder.BOARD_WIDTH + 1) * Math.random());
-		int positionY = (int) Math.round((BoardBuilder.BOARD_HEIGHT + 1) * Math.random());
+		int positionX = (int) Math.round((BoardBuilder.BOARD_WIDTH) * Math.random());
+		int positionY = (int) Math.round((BoardBuilder.BOARD_HEIGHT) * Math.random());
 
 		PositionObject position = new PositionObject(positionX, positionY);
 		return position;
@@ -52,7 +70,6 @@ public class SetUpGame {
 	
 	public void setTeam0Bases(ArrayList<Base> bases) {
 		team0Bases = bases;
-		System.out.println(team0Bases);
 	}  // end setTeam0Bases
 	
 	public void setTeam1Bases(ArrayList<Base> bases) {

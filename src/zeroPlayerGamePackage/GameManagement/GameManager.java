@@ -30,8 +30,12 @@ public class GameManager {
 		
 		ConsoleLogger console = new ConsoleLogger();
 		
+
+		
 		console.draw(team0.getBasePositions(), team1.getBasePositions(), 
 				team0.getRegimentPositions(), team1.getRegimentPositions());
+		
+
 		
 
 		
@@ -49,6 +53,11 @@ public class GameManager {
 		
 		
 		// START TEST CODE
+//		
+//		for (int i = 0; i < 3; i++) {
+//			System.out.println(team0.getBasePositions().get(i).getPositionString());
+//			System.out.println(team1.getBasePositions().get(i).getPositionString());
+//		}
 //		Regiment tester0 = new Regiment(0);
 //		tester0.setPositionX(0);
 //		tester0.setPositionY(0);
