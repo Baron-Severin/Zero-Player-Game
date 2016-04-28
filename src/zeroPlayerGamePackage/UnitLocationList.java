@@ -1,8 +1,13 @@
 package zeroPlayerGamePackage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UnitLocationList {
+	
+	// key is regiment id, value is regiment position
+	public static HashMap<Integer, PositionObject> team0RegimentLocations = new HashMap<Integer, PositionObject>();
+	public static HashMap<Integer, PositionObject> team1RegimentLocations = new HashMap<Integer, PositionObject>();
 	
 	public UnitLocationList(int team) {
 		super();
@@ -24,18 +29,24 @@ public class UnitLocationList {
 		return regimentPositions;
 	}  // end getRegimentPositions
 	
-	public void addUnit(Regiment regiment, PositionObject position) {
+	public void addUnit(Regiment regiment) {
 		if (regimentList.contains(regiment)) {
 			System.out.println("UnitLocationList.addUnit Error: regimentList already contains " + regiment);
 		}  // end if statement
 		
-		else if (regimentPositions.contains(position)) {
-			System.out.println("UnitLocationList.addUnit Error: regimentPositions already contains " + position);
+		else if (regimentPositions.contains(regiment.getPositionObject())) {
+			System.out.println("UnitLocationList.addUnit Error: regimentPositions already contains " + regiment.getPositionObject());
 		}  // end else if statement
 		
 		else {
 			regimentList.add(regiment);
-			regimentPositions.add(position);
+			regimentPositions.add(regiment.getPositionObject());
+			
+			if (this.team == 0) {
+				team0RegimentLocations.put(regiment.getNumber(), regiment.getPositionObject());
+			} else {
+				team1RegimentLocations.put(regiment.getNumber(), regiment.getPositionObject());
+			}
 		}  // end else statement
 		
 	}  // end addUnit
@@ -104,7 +115,8 @@ public class UnitLocationList {
 	}  // end whereIsUnit(Regiment)
 	
 	public PositionObject whereIsUnit (int regimentNumber) {
-		Regiment regiment = new Regiment(99);
+		PositionObject throwaway = new PositionObject(99, 99);
+		Regiment regiment = new Regiment(99, throwaway);
 		for (int i = 0; i < regimentList.size(); i++) {
 			
 			if (regimentList.get(i).getNumber() == regimentNumber) {

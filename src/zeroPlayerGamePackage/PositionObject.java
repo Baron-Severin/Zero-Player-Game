@@ -1,6 +1,8 @@
 package zeroPlayerGamePackage;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class PositionObject extends HasGridPosition {
 
@@ -48,6 +50,25 @@ public class PositionObject extends HasGridPosition {
 	}  // end positionEquality
 	
 	public Boolean containsPositionEquality (ArrayList<PositionObject> list) {
+		
+		for (int i = 0; i < list.size(); i++) {
+			
+			if (positionEquality(list.get(i))) {
+				
+				return true;
+				
+			}  // end if statement
+			
+		}  // end for loop
+		
+		return false;
+		
+	}  // end containsPositionEquality
+	
+	public Boolean containsPositionEquality (HashMap<Integer, PositionObject> hashmap) {
+		
+		Collection<PositionObject> templist = hashmap.values();		
+		ArrayList<PositionObject> list = new ArrayList<PositionObject>(templist);
 		
 		for (int i = 0; i < list.size(); i++) {
 			

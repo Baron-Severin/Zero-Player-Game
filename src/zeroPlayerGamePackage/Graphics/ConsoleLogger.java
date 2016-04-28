@@ -1,6 +1,7 @@
 package zeroPlayerGamePackage.Graphics;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import zeroPlayerGamePackage.BoardBuilder;
 import zeroPlayerGamePackage.PositionObject;
@@ -9,6 +10,10 @@ public class ConsoleLogger {
 	
 	public void draw(ArrayList<PositionObject> team0Bases, ArrayList<PositionObject> team1Bases, 
 			ArrayList<PositionObject> team0Regiments, ArrayList<PositionObject> team1Regiments) {
+		
+		for (int i = 0; i < 20; i++) {
+			System.out.println();
+		}
 		
 		for (int h = 0; h < BoardBuilder.BOARD_HEIGHT + 1; h++) {
 			
@@ -20,7 +25,7 @@ public class ConsoleLogger {
 				if (position.containsPositionEquality(team0Bases)) {
 					currentRow += " X";
 				} else if (position.containsPositionEquality(team1Bases)) {
-					currentRow += " O";
+					currentRow += " T";
 				} else if (position.containsPositionEquality(team0Regiments)) {
 					currentRow += " 0";
 				} else if (position.containsPositionEquality(team1Regiments)) {

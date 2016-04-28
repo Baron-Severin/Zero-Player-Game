@@ -4,12 +4,13 @@ import java.util.ArrayList;
 
 import zeroPlayerGamePackage.BoardBuilder;
 import zeroPlayerGamePackage.PositionObject;
+import zeroPlayerGamePackage.Regiment;
 import zeroPlayerGamePackage.UnitLocationList;
 import zeroPlayerGamePackage.Graphics.ConsoleLogger;
 
 public class GameManager {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		
         SetUpGame setup = new SetUpGame();
         
@@ -31,13 +32,51 @@ public class GameManager {
 		ConsoleLogger console = new ConsoleLogger();
 		
 
-		
 		console.draw(team0.getBasePositions(), team1.getBasePositions(), 
 				team0.getRegimentPositions(), team1.getRegimentPositions());
 		
-
+		Thread.sleep(2000);
 		
-
+		while (Regiment.regimentCounter < (BoardBuilder.REGIMENTS_PER_TEAM * 2)) {
+			
+			ArrayList<PositionObject> team0Bases = team0.getBasePositions();
+			ArrayList<PositionObject> team1Bases = team1.getBasePositions();
+			
+			BoardBuilder builder = new BoardBuilder();
+			
+			PositionObject position = builder.suggestRegimentPlacement(team0Bases);
+			
+			if (!position.containsPositionEquality(UnitLocationList.team0RegimentLocations) 
+					&& !position.containsPositionEquality(UnitLocationList.team1RegimentLocations)) {
+				
+				team0.addUnit(new Regiment(0, position));
+				
+				console.draw(team0.getBasePositions(), team1.getBasePositions(), 
+						team0.getRegimentPositions(), team1.getRegimentPositions());
+				
+				Thread.sleep(300);
+				
+			}  // end if statement
+			
+			position = builder.suggestRegimentPlacement(team1Bases);
+			
+			if (!position.containsPositionEquality(UnitLocationList.team0RegimentLocations) 
+					&& !position.containsPositionEquality(UnitLocationList.team1RegimentLocations)) {
+				
+				team1.addUnit(new Regiment(1, position));
+				
+				console.draw(team0.getBasePositions(), team1.getBasePositions(), 
+						team0.getRegimentPositions(), team1.getRegimentPositions());
+				
+				Thread.sleep(200);
+				
+			}  // end if statement
+			
+			
+			
+		}  // end while loop
+		
+		
 		
 		/*
 		 *  position team0.suggestRegimentPlacement()
