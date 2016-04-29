@@ -57,6 +57,13 @@ public class UnitLocationList {
 			
 			if (regimentList.get(i) == regiment) {
 				regimentPositions.set(i, position);
+				
+				if (regiment.getTeam() == 0) {
+					team0RegimentLocations.put(regiment.getNumber(), position);
+				} else if (regiment.getTeam() == 1) {
+					team1RegimentLocations.put(regiment.getNumber(), position);
+				}  // end if statement
+				
 				break;
 			}  // end if statement
 			
@@ -83,24 +90,27 @@ public class UnitLocationList {
 		
 	}  // end removeUnit
 	
-	public void removeUnit(PositionObject position) {
-		
-		if (!regimentPositions.contains(position)) {
-			
-		    System.out.println("Error: PositionObject passed to UnitLocationList " + this 
-		    		+ ".removeUnit not found within regimentList");
-		    new Exception().printStackTrace();
-		    
-		}  else {
-			
-			int index = regimentPositions.indexOf(position);
-			regimentPositions.remove(position);
-			regimentList.remove(index);
-			// TODO: this method does not open Regiment for garbage collection
-			
-		}  // end if statement
-		
-	}  // end removeUnit
+	/*
+	* removeUnit should take a regiment as a parameter, not a position.  Cleaning up the HashMap
+	*  requires the key
+	*/  
+//	public void removeUnit(PositionObject position) {
+//		
+//		if (!regimentPositions.contains(position)) {
+//			
+//		    System.out.println("Error: PositionObject passed to UnitLocationList " + this 
+//		    		+ ".removeUnit not found within regimentList");
+//		    new Exception().printStackTrace();
+//		    
+//		}  else {
+//			
+//			int index = regimentPositions.indexOf(position);
+//			regimentPositions.remove(position);
+//			regimentList.remove(index);
+//			
+//		}  // end if statement
+//		
+//	}  // end removeUnit
 	
 	public PositionObject whereIsUnit(Regiment regiment) {
 		if (!regimentList.contains(regiment)) {

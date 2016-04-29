@@ -86,14 +86,31 @@ public class HasGridPosition {
 		
 		return position;
 		
-	}  // end directionToSquare()
+	}  // end directionToPositionObject()
+	
+	public ArrayList<PositionObject> directionToPositionObject(ArrayList<String> directions) {
+		
+		ArrayList<PositionObject> positions = new ArrayList<PositionObject>();
+		
+		for (int i = 0; i < directions.size(); i++) {
+			
+			PositionObject thisPosition = directionToPositionObject(directions.get(i));
+			positions.add(thisPosition);
+			
+		}  // end for loop
+		
+		return positions;
+		
+	}  // end directionToPositionObject
 	
 	public ArrayList<String> checkOpenDirections() {
 		ArrayList<String> directions = BoardBuilder.eightDirections();
 		ArrayList<String> openDirections = new ArrayList<String>();
 		for (int i = 0; i < directions.size(); i++) {
 			
-			if (BoardBuilder.isSquareOpen(directionToPositionObject(directions.get(i))) == true){
+			PositionObject position = directionToPositionObject(directions.get(i));
+			
+			if (BoardBuilder.isSquareOpen(position) == true){
 			
 			    openDirections.add(directions.get(i));
 			
