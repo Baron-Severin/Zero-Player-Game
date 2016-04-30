@@ -7,7 +7,12 @@ import zeroPlayerGamePackage.ReturnObjects.PositionValueAndType;
 
 public class RegimentAi extends HasGridPosition {
 	
-	private int team;
+	protected int morale;
+	protected int damage;
+	protected int health;
+	protected int id;
+	protected int team;
+	protected ArrayList<PositionValueAndType> possibleMoves;
 
 	
 	public ArrayList<PositionValueAndType> checkOpenDirections() {
@@ -40,9 +45,54 @@ public class RegimentAi extends HasGridPosition {
 		
 	}  // end checkOpenDirections
 	
+	public void logPossibleDirectionCheck() {
+		
+		this.possibleMoves = checkOpenDirections();
+		
+	}  // end logPossibleDirectionCheck
 	
+	public void weighPossibleMoves() {
+		
+		Double aggressiveModifier = weighMorale().get(0);
+		Double defensiveModifier = weighMorale().get(1);
+		
+		
+	}  // end weighPossibleMoves()
 	
+	public ArrayList<Double> weighMorale() {
+		
+		double aggressiveModifier = 0;
+		double defensiveModifier = 0;
+		
+		if (this.morale >= 80) {
+			aggressiveModifier = 1.2;
+			defensiveModifier = .6;
+		} else if (this.morale < 80 && this.morale >= 50) {
+			aggressiveModifier = 1;
+			defensiveModifier = 1;
+		} else if (this.morale < 50 && this.morale >= 10) {
+			aggressiveModifier = .6;
+			defensiveModifier = 1;
+		} else if (this.morale < 10) {
+			aggressiveModifier = 0;
+			defensiveModifier = 1;
+		}  // end if statement
+		
+		ArrayList<Double> modifiers = new ArrayList<Double>();
+		modifiers.add(aggressiveModifier);
+		modifiers.add(defensiveModifier);
+		
+		return modifiers;
+		
+	}  // end weighMorale
 	
+	public void weighDefensive() {
+		
+		/*
+		 *   TODO this is where I left off
+		 */
+		
+	}  // end weighSurvivability
 	
 	
 	

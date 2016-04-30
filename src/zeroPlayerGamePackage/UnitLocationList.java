@@ -26,10 +26,16 @@ public class UnitLocationList {
 	public ArrayList<Regiment> getRegimentList() {
 		return regimentList;
 	}  // end getregimentList
+	
+	public Regiment getRegimentByIndex(int index) {
+		Regiment regiment = this.regimentList.get(index);
+		return regiment;
+	}  // end getRegimentByIndex
 
 	public ArrayList<PositionObject> getRegimentPositions() {
 		return regimentPositions;
 	}  // end getRegimentPositions
+	
 	
 	public void addUnit(Regiment regiment) {
 		if (regimentList.contains(regiment)) {
@@ -88,31 +94,17 @@ public class UnitLocationList {
 			regimentPositions.remove(index);
 			regiment = null;
 			
+			if (this.team == 0) {
+				
+				team0RegimentLocations.remove(regiment);
+				
+			} else if (this.team == 1) {
+                team1RegimentLocations.remove(regiment);
+			}  // end if statement
+			
 		}  // end if statement
 		
 	}  // end removeUnit
-	
-	/*
-	* removeUnit should take a regiment as a parameter, not a position.  Cleaning up the HashMap
-	*  requires the key
-	*/  
-//	public void removeUnit(PositionObject position) {
-//		
-//		if (!regimentPositions.contains(position)) {
-//			
-//		    System.out.println("Error: PositionObject passed to UnitLocationList " + this 
-//		    		+ ".removeUnit not found within regimentList");
-//		    new Exception().printStackTrace();
-//		    
-//		}  else {
-//			
-//			int index = regimentPositions.indexOf(position);
-//			regimentPositions.remove(position);
-//			regimentList.remove(index);
-//			
-//		}  // end if statement
-//		
-//	}  // end removeUnit
 	
 	public PositionObject whereIsUnit(Regiment regiment) {
 		if (!regimentList.contains(regiment)) {

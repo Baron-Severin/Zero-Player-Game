@@ -20,12 +20,6 @@ public class Regiment extends RegimentAi {
 		this.setPositionY(position.getPositionY());
 		regimentCounter++;
 	};
-
-	private int morale;
-	private int damage;
-	private int health;
-	private int team;
-	private int id;
 	
 	public int getNumber() {
 		return this.id;

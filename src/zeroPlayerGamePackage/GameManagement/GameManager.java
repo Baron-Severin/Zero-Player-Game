@@ -7,6 +7,7 @@ import zeroPlayerGamePackage.Regiment;
 import zeroPlayerGamePackage.UnitLocationList;
 import zeroPlayerGamePackage.Graphics.ConsoleLogger;
 import zeroPlayerGamePackage.ReturnObjects.PositionObject;
+import zeroPlayerGamePackage.ReturnObjects.PositionValueAndType;
 
 public class GameManager {
 
@@ -69,7 +70,33 @@ public class GameManager {
 			
 		}  // end while loop
 		
-		
+		for (int i = 0; i < BoardBuilder.REGIMENTS_PER_TEAM; i++) {
+			
+			Regiment reg0 = team0.getRegimentByIndex(i);
+			
+			if (!(reg0.checkOpenDirections().size() == 0)) {
+				
+				reg0.logPossibleDirectionCheck();
+				
+				reg0.weighPossibleMoves();
+				
+			}  // end if statement
+			
+			/*
+			 *  BIZZARO LAND DIVIDER STARTS HERE
+			 */
+			
+			Regiment reg1 = team1.getRegimentByIndex(i);
+			
+			if (!(reg1.checkOpenDirections().size() == 0)) {
+			
+				reg1.logPossibleDirectionCheck();
+				
+				reg1.weighPossibleMoves();
+			
+			}  // end if statement
+			
+		}  // end for loop (BoardBuilder.REGIMENTS_PER_TEAM)
 		
 		
 		
