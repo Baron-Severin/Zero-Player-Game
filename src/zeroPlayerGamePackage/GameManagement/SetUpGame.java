@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import zeroPlayerGamePackage.Base;
 import zeroPlayerGamePackage.BoardBuilder;
-import zeroPlayerGamePackage.PositionObject;
+import zeroPlayerGamePackage.ReturnObjects.PositionObject;
 
 public class SetUpGame {
 	

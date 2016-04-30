@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import zeroPlayerGamePackage.BoardBuilder;
-import zeroPlayerGamePackage.PositionObject;
+import zeroPlayerGamePackage.ReturnObjects.PositionObject;
 
 public class ConsoleLogger {
 	

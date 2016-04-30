@@ -3,10 +3,10 @@ package zeroPlayerGamePackage.GameManagement;
 import java.util.ArrayList;
 
 import zeroPlayerGamePackage.BoardBuilder;
-import zeroPlayerGamePackage.PositionObject;
 import zeroPlayerGamePackage.Regiment;
 import zeroPlayerGamePackage.UnitLocationList;
 import zeroPlayerGamePackage.Graphics.ConsoleLogger;
+import zeroPlayerGamePackage.ReturnObjects.PositionObject;
 
 public class GameManager {
 
@@ -37,44 +37,37 @@ public class GameManager {
 		
 		Thread.sleep(2000);
 		
-//		while (Regiment.regimentCounter < (BoardBuilder.REGIMENTS_PER_TEAM * 2)) {
-//			
-//			ArrayList<PositionObject> team0Bases = team0.getBasePositions();
-//			ArrayList<PositionObject> team1Bases = team1.getBasePositions();
-//			
-//			BoardBuilder builder = new BoardBuilder();
-//			
-//			PositionObject position = builder.suggestRegimentPlacement(team0Bases);
-//			
-//			if (!position.containsPositionEquality(UnitLocationList.team0RegimentLocations) 
-//					&& !position.containsPositionEquality(UnitLocationList.team1RegimentLocations)) {
-//				
-//				team0.addUnit(new Regiment(0, position));
-//				
-//				console.draw(team0.getBasePositions(), team1.getBasePositions(), 
-//						team0.getRegimentPositions(), team1.getRegimentPositions());
-//				
-//				Thread.sleep(300);
-//				
-//			}  // end if statement
-//			
-//			position = builder.suggestRegimentPlacement(team1Bases);
-//			
-//			if (!position.containsPositionEquality(UnitLocationList.team0RegimentLocations) 
-//					&& !position.containsPositionEquality(UnitLocationList.team1RegimentLocations)) {
-//				
-//				team1.addUnit(new Regiment(1, position));
-//				
-//				console.draw(team0.getBasePositions(), team1.getBasePositions(), 
-//						team0.getRegimentPositions(), team1.getRegimentPositions());
-//				
-//				Thread.sleep(200);
-//				
-//			}  // end if statement
-//			
-//			
-//			
-//		}  // end while loop
+		while (Regiment.regimentCounter < (BoardBuilder.REGIMENTS_PER_TEAM * 2)) {
+			
+			ArrayList<PositionObject> team0Bases = team0.getBasePositions();
+			ArrayList<PositionObject> team1Bases = team1.getBasePositions();
+			
+			BoardBuilder builder = new BoardBuilder();
+			
+			PositionObject position = builder.suggestRegimentPlacement(team0Bases);
+			
+			if (!position.containsPositionEquality(UnitLocationList.team0RegimentLocations) 
+					&& !position.containsPositionEquality(UnitLocationList.team1RegimentLocations)) {
+				
+				team0.addUnit(new Regiment(0, position));
+				
+			}  // end if statement
+			
+			position = builder.suggestRegimentPlacement(team1Bases);
+			
+			if (!position.containsPositionEquality(UnitLocationList.team0RegimentLocations) 
+					&& !position.containsPositionEquality(UnitLocationList.team1RegimentLocations)) {
+				
+				team1.addUnit(new Regiment(1, position));
+				
+			}  // end if statement
+			
+			console.draw(team0.getBasePositions(), team1.getBasePositions(), 
+					team0.getRegimentPositions(), team1.getRegimentPositions());
+			
+			Thread.sleep(300);
+			
+		}  // end while loop
 		
 		
 		
@@ -99,9 +92,9 @@ public class GameManager {
 //			System.out.println(team0.getBasePositions().get(i).getPositionString());
 //			System.out.println(team1.getBasePositions().get(i).getPositionString());
 //		}
-		PositionObject position = new PositionObject(5, 5);
-		Regiment tester0 = new Regiment(0, position);
-		ArrayList<String> array = tester0.checkOpenDirections();
+//		PositionObject position = new PositionObject(5, 5);
+//		Regiment tester0 = new Regiment(0, position);
+//		ArrayList<String> array = tester0.checkOpenDirections();
 //		System.out.println(tester0.directionToPositionObject(array));
 //		PositionObject position = new PositionObject(0, 0);
 //		BoardBuilder.addToOccupiedSquares(position);

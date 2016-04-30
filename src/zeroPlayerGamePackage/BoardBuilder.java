@@ -3,6 +3,8 @@ package zeroPlayerGamePackage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import zeroPlayerGamePackage.ReturnObjects.PositionObject;
+
 public class BoardBuilder {
 	
 	public final static int BOARD_WIDTH = 40;
@@ -17,7 +19,7 @@ public class BoardBuilder {
 				|| position.getPositionY() < 0) {
 			return false;
 		} else {
-			System.out.println("Position " + position.getPositionX() + ", " + position.getPositionY() + " is open");
+//			System.out.println("Position " + position.getPositionX() + ", " + position.getPositionY() + " is open");
 			return true;
 		}
 	}  // end isSquareOpen

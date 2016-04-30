@@ -1,8 +1,10 @@
-package zeroPlayerGamePackage;
+package zeroPlayerGamePackage.ReturnObjects;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+
+import zeroPlayerGamePackage.HasGridPosition;
 
 public class PositionObject extends HasGridPosition {
 

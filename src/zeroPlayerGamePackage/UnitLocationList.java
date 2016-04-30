@@ -3,6 +3,8 @@ package zeroPlayerGamePackage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import zeroPlayerGamePackage.ReturnObjects.PositionObject;
+
 public class UnitLocationList {
 	
 	// key is regiment id, value is regiment position
