@@ -37,7 +37,7 @@ public class GameManager {
 		console.draw(team0.getBasePositions(), team1.getBasePositions(), 
 				team0.getRegimentPositions(), team1.getRegimentPositions());
 		
-//		Thread.sleep(2000);
+		Thread.sleep(2000);
 		
 		while (Regiment.regimentCounter < (BoardBuilder.REGIMENTS_PER_TEAM * 2)) {
 			
@@ -81,7 +81,7 @@ public class GameManager {
 			console.draw(team0.getBasePositions(), team1.getBasePositions(), 
 					team0.getRegimentPositions(), team1.getRegimentPositions());
 			
-//			Thread.sleep(300);
+			Thread.sleep(300);
 			
 		}  // end while loop
 		
@@ -116,20 +116,24 @@ public class GameManager {
 		
 		
 		
-		/*
-		 *  position team0.suggestRegimentPlacement()
-		 *  if (!team0.isPositionOccupiedByTeam && !team1.isPositionOccupiedByTeam){
-		 *     placeUnit()
-		 *     } else {
-		 *     unplaceableLocationList.add(position)
-		 *     
-		 *     (after all are placed) - unplaceableLocationList = null;
-		 */
+		
+
 		
 		
 		
 		
 		// START TEST CODE
+		// much of this no longer applies, but some of it saves a bit of time when debugging
+//		
+//		ArrayList<PredictionHolder> predicters = new ArrayList<PredictionHolder>();
+//		for (Regiment i: team0.getRegimentList()) {
+//			
+//			PredictionHolder tempPredicter = new PredictionHolder(i);
+//			predicters.add(tempPredicter);
+//			tempPredicter.populateDirectionHolder();
+//		}  // end for in loop
+//		
+//		
 //		
 //		for (int i = 0; i < 3; i++) {
 //			System.out.println(team0.getBasePositions().get(i).getPositionString());
@@ -137,6 +141,10 @@ public class GameManager {
 //		}
 //		PositionObject position = new PositionObject(5, 5);
 //		Regiment tester0 = new Regiment(0, position);
+//		team0.addUnit(tester0);
+//		PositionObject checkin = new PositionObject(5, 5);
+//		System.out.println(UnitLocationList.isPositionOccupiedByTeam(checkin, 0));
+//		System.out.println(UnitLocationList.isPositionOccupiedByTeam(checkin, 1));
 //		PredictionHolder pred = new PredictionHolder(tester0);
 //		pred.populateDirectionHolder();
 //		ArrayList<String> array = tester0.checkOpenDirections();

@@ -1,6 +1,7 @@
 package zeroPlayerGamePackage;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import zeroPlayerGamePackage.ReturnObjects.PositionObject;
@@ -142,36 +143,42 @@ public class UnitLocationList {
 		
 	}  // end whereIsUnit(regimentNumber)
 	
-	public Boolean isPositionOccupiedByTeam (PositionObject position) {
+	public static Boolean isPositionOccupiedByTeam (PositionObject position, int team) {
 		
-		if (regimentPositions.contains(position)) {
+		Boolean myBool = false;
+		
+		Collection<PositionObject> locationCollection = null;
+		
+		if (team == 0) {
 			
-			return true;
+			locationCollection = team0RegimentLocations.values();
 			
-		}  else {
+		}  else if (team == 1) {
 			
-			return false;
+			locationCollection = team1RegimentLocations.values();
 			
 		}  // end if statement
 		
-	}  // end isSquareOccupiedByTeam
-
-	public Boolean isPositionOccupiedByTeam (int positionX, int positionY) {
 		
-		for (int i = 0; i < regimentPositions.size(); i++) {
+		ArrayList<PositionObject> occupiedLocations = new ArrayList<PositionObject>();
+		occupiedLocations.addAll(locationCollection);
 			
-			if (regimentPositions.get(i).getPositionX() == positionX 
-					&& regimentPositions.get(i).getPositionY() == positionY) {
+		for (PositionObject i: occupiedLocations) {
 				
-				return true;
+				if (i.positionEquality(position)) {
+					myBool = true;
+					break;
+				}  // end if statement
 				
-			}  // end if statement
-		
 		}  // end for loop
-		
-		return false;
-		
-	}  // end isSquareOccupiedByTeam
+		    
+    if (myBool == true) {
+    	return true;
+    } else {
+    	return false;
+    }  // end if statement
+			
+	}  // end isPositionOccupiedByTeam
 	
 	public void addBase(PositionObject position) {
 		

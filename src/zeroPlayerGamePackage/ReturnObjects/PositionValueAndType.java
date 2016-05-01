@@ -29,6 +29,10 @@ public class PositionValueAndType {
 		this.value = value;
 	}  // end setValue
 	
+	public void printAll() {
+		System.out.println(position.getPositionString() + ", " + value + ", " + type);
+	}  // end printAll
+	
 	
 	
 }  // end PositionValueAndType
