@@ -46,23 +46,37 @@ public class GameManager {
 			
 			BoardBuilder builder = new BoardBuilder();
 			
-			PositionObject position = builder.suggestRegimentPlacement(team0Bases);
+			PositionObject position;
 			
-			if (!position.containsPositionEquality(UnitLocationList.team0RegimentLocations) 
-					&& !position.containsPositionEquality(UnitLocationList.team1RegimentLocations)) {
+			Boolean placed = false;
+			while (placed == false){
 				
-				team0.addUnit(new Regiment(0, position));
-				
-			}  // end if statement
+				position = builder.suggestRegimentPlacement(team0Bases);
 			
-			position = builder.suggestRegimentPlacement(team1Bases);
+				if (!position.containsPositionEquality(UnitLocationList.team0RegimentLocations) 
+						&& !position.containsPositionEquality(UnitLocationList.team1RegimentLocations)) {
+					
+					team0.addUnit(new Regiment(0, position));
+					placed = true;
+					
+				}  // end if statement
 			
-			if (!position.containsPositionEquality(UnitLocationList.team0RegimentLocations) 
-					&& !position.containsPositionEquality(UnitLocationList.team1RegimentLocations)) {
+			}  // end while loop
+			
+			placed = false;
+			while (placed == false) {
 				
-				team1.addUnit(new Regiment(1, position));
-				
-			}  // end if statement
+				position = builder.suggestRegimentPlacement(team1Bases);
+			
+				if (!position.containsPositionEquality(UnitLocationList.team0RegimentLocations) 
+						&& !position.containsPositionEquality(UnitLocationList.team1RegimentLocations)) {
+					
+					team1.addUnit(new Regiment(1, position));
+					placed = true;
+					
+				}  // end if statement
+			
+			}  // end while loop
 			
 			console.draw(team0.getBasePositions(), team1.getBasePositions(), 
 					team0.getRegimentPositions(), team1.getRegimentPositions());
@@ -71,15 +85,6 @@ public class GameManager {
 			
 		}  // end while loop
 		
-//		System.out.println(BoardBuilder.REGIMENTS_PER_TEAM);
-//		System.out.println(team0.regimentList.size());
-//		System.out.println(team1.regimentList.size());
-		
-		/*
-		 * TODO the same number of regiments (regiments_per_team * 2) are always being created, but 
-		 * for some reason a few of them are occasionally being assigned to the incorrect regimentList.
-		 * Figure this out, it's causing a pretty serious error.  Lines 74-76 debugging related
-		 */
 		
 		for (int i = 0; i < (BoardBuilder.REGIMENTS_PER_TEAM); i++) {
 			
