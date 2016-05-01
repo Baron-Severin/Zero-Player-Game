@@ -13,7 +13,11 @@ public class RegimentAi extends HasGridPosition {
 	protected int id;
 	protected int team;
 	protected ArrayList<PositionValueAndType> possibleMoves;
+	protected PredictionHolder predictionHolder;
 
+	public void assignPredictionHolder(PredictionHolder prediction) {
+		this.predictionHolder = prediction;
+	}  // end assignPredictionHolder
 	
 	public ArrayList<PositionValueAndType> checkOpenDirections() {
 		ArrayList<String> directions = BoardBuilder.eightDirections();
@@ -48,6 +52,7 @@ public class RegimentAi extends HasGridPosition {
 	public void logPossibleDirectionCheck() {
 		
 		this.possibleMoves = checkOpenDirections();
+		
 		
 	}  // end logPossibleDirectionCheck
 	
@@ -89,7 +94,7 @@ public class RegimentAi extends HasGridPosition {
 	public void weighDefensive() {
 		
 		/*
-		 *   TODO this is where I left off
+		 *   TODO fill this in
 		 */
 		
 	}  // end weighSurvivability

@@ -6,7 +6,7 @@ public class PositionValueAndType {
 		super();
 		this.position = position;
 		this.value = value;
-		this.type = type;  // type == "empty" "ally" or "enemy"
+		this.type = type;  // type == "empty" "ally" "enemy" or "blocked"
 	}  // end constructor
 	
 	private PositionObject position;

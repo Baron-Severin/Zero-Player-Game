@@ -18,7 +18,7 @@ public class UnitLocationList {
 	
 	private int team;
 
-	private ArrayList<Regiment> regimentList = new ArrayList<Regiment>();
+	public ArrayList<Regiment> regimentList = new ArrayList<Regiment>();
 	private ArrayList<PositionObject> regimentPositions = new ArrayList<PositionObject>();
 	private ArrayList<Base> ourBases = new ArrayList<Base>();
 	private ArrayList<PositionObject> basePositions = new ArrayList<PositionObject>();

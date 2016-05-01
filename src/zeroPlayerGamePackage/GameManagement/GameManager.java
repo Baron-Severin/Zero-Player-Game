@@ -3,6 +3,7 @@ package zeroPlayerGamePackage.GameManagement;
 import java.util.ArrayList;
 
 import zeroPlayerGamePackage.BoardBuilder;
+import zeroPlayerGamePackage.PredictionHolder;
 import zeroPlayerGamePackage.Regiment;
 import zeroPlayerGamePackage.UnitLocationList;
 import zeroPlayerGamePackage.Graphics.ConsoleLogger;
@@ -36,7 +37,7 @@ public class GameManager {
 		console.draw(team0.getBasePositions(), team1.getBasePositions(), 
 				team0.getRegimentPositions(), team1.getRegimentPositions());
 		
-		Thread.sleep(2000);
+//		Thread.sleep(2000);
 		
 		while (Regiment.regimentCounter < (BoardBuilder.REGIMENTS_PER_TEAM * 2)) {
 			
@@ -66,11 +67,21 @@ public class GameManager {
 			console.draw(team0.getBasePositions(), team1.getBasePositions(), 
 					team0.getRegimentPositions(), team1.getRegimentPositions());
 			
-			Thread.sleep(300);
+//			Thread.sleep(300);
 			
 		}  // end while loop
 		
-		for (int i = 0; i < BoardBuilder.REGIMENTS_PER_TEAM; i++) {
+//		System.out.println(BoardBuilder.REGIMENTS_PER_TEAM);
+//		System.out.println(team0.regimentList.size());
+//		System.out.println(team1.regimentList.size());
+		
+		/*
+		 * TODO the same number of regiments (regiments_per_team * 2) are always being created, but 
+		 * for some reason a few of them are occasionally being assigned to the incorrect regimentList.
+		 * Figure this out, it's causing a pretty serious error.  Lines 74-76 debugging related
+		 */
+		
+		for (int i = 0; i < (BoardBuilder.REGIMENTS_PER_TEAM); i++) {
 			
 			Regiment reg0 = team0.getRegimentByIndex(i);
 			
@@ -121,6 +132,8 @@ public class GameManager {
 //		}
 //		PositionObject position = new PositionObject(5, 5);
 //		Regiment tester0 = new Regiment(0, position);
+//		PredictionHolder pred = new PredictionHolder(tester0);
+//		pred.populateDirectionHolder();
 //		ArrayList<String> array = tester0.checkOpenDirections();
 //		System.out.println(tester0.directionToPositionObject(array));
 //		PositionObject position = new PositionObject(0, 0);
