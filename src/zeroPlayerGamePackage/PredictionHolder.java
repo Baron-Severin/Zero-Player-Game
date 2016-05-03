@@ -40,34 +40,14 @@ public class PredictionHolder {
 	
 	private ArrayList<PositionValueAndType> surroundingPositions = new ArrayList<PositionValueAndType>();
 	
+	
 	// This populates each position next to the Regiment, and each next to that.
 	// Used for weighing possible moves
 	public void populateDirectionHolder() {
 		
-	// convert neighboring directions to PositionObjects; check that they're on the board
+    	ArrayList<PositionObject> positions = surroundingsToPositions(regiment.getPositionObject());
 		
-		ArrayList<String> eightDirections = BoardBuilder.eightDirections();
-		ArrayList<PositionObject> positions = new ArrayList<PositionObject>();
-		
-		HasGridPosition positionFactory = new HasGridPosition();
-		positionFactory.setPositionWithPositionObject(regiment.getPositionObject());
-		
-		for (int i = 0; i < eightDirections.size(); i++) {
-			
-			PositionObject place = positionFactory.directionToPositionObject(eightDirections.get(i));
-			
-			if (place.getPositionX() >= 0 
-					&& place.getPositionX() <= (BoardBuilder.BOARD_WIDTH -1) 
-					&& place.getPositionY() >= 0 
-					&& place.getPositionY() <= (BoardBuilder.BOARD_HEIGHT -1)) {
-				positions.add(place);
-			
-			}  // end if statement
-			
-		}  // end for loop
-		
-	// check what, if anything, is occupying those surrounding positions
-		
+    	// check what, if anything, is occupying those surrounding positions
 		ArrayList<String> types = new ArrayList<String>();
 		
 		for (int i = 0; i < positions.size(); i++) {
@@ -86,16 +66,24 @@ public class PredictionHolder {
 				
 				types.add("ally");
 				
+			} else if (positions.get(i).getPositionX() < 0
+					|| positions.get(i).getPositionX() >= BoardBuilder.BOARD_WIDTH
+					|| positions.get(i).getPositionY() < 0
+					|| positions.get(i).getPositionY() >= BoardBuilder.BOARD_HEIGHT) {
+				
+				types.add("blocked");
+				
 			} else if (!(UnitLocationList.isPositionOccupiedByTeam(positions.get(i), 1))
 					&& !(UnitLocationList.isPositionOccupiedByTeam(positions.get(i), 0))) {
+				
 				types.add("empty");
+				
 			}  // end if statement
 			
 			
 		}  // end for loop
 		
-	// pop each PositionObject and Type into a pvat, then add it to the ArrayList
-		
+	    // pop each PositionObject and Type into a pvat, then add it to the ArrayList		
 		for (int i = 0; i < positions.size(); i++) {
 			
 			PositionValueAndType tempPvat = new PositionValueAndType(positions.get(i), 0, types.get(i));
@@ -106,7 +94,44 @@ public class PredictionHolder {
 		
 	}  // end populateDirectionHolder
 	
+	public ArrayList<PositionObject> surroundingsToPositions(PositionObject thisPosition) {
 	
+		// convert neighboring directions to PositionObjects; check that they're on the board
+		ArrayList<String> eightDirections = BoardBuilder.eightDirections();
+		ArrayList<PositionObject> positions = new ArrayList<PositionObject>();
+		
+		HasGridPosition positionFactory = new HasGridPosition();
+		positionFactory.setPositionWithPositionObject(thisPosition);
+		
+		for (int i = 0; i < eightDirections.size(); i++) {
+			
+			PositionObject place = positionFactory.directionToPositionObject(eightDirections.get(i));
+			
+//			if (place.getPositionX() >= 0 
+//					&& place.getPositionX() <= (BoardBuilder.BOARD_WIDTH -1) 
+//					&& place.getPositionY() >= 0 
+//					&& place.getPositionY() <= (BoardBuilder.BOARD_HEIGHT -1)) {
+				positions.add(place);
+			
+//			}  // end if statement
+			
+		}  // end for loop
+		
+		return positions;
+		
+	}  // surroundingsToPositions
+	
+	public void checkSurroundingPerimeters() {
+		
+		for (int i = 0; i < surroundingPositions.size(); i++) {
+			
+			/*
+			 * TODO here
+			 */
+			
+		}  // end for loop
+		
+	}  // end checkSurroundingPerimeters
 	
 	
 }  // end PredictionHolder

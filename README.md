@@ -17,12 +17,12 @@ runGame() // this loops over each unit
 	weighPossibleMoves()  // adds a score to each possible movement/attack
 	    morale() // high morale adds multiplier (eg 1.1*) to potential gain points, lower multiplier 
 	             // (eg .9) to survivability points.  low morale does vice versa
-		survivability()
+		weighDefensive()
 			openFlanks()
 			alliesNearby()
 			alliesStrength()
 			enemiesDamage()  // compares to my hp
-		potentialGain()
+		weighOffensive()
 		    enemiesHp()
 		    nearbyObjectives()
 		    ifMoveIsAttack { 

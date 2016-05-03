@@ -93,9 +93,9 @@ public class RegimentAi extends HasGridPosition {
 	
 	public void weighDefensive() {
 		
-		/*
-		 *   TODO fill this in
-		 */
+		// areFLanksOpen()
+		// areAlliesNearby()  // and are they strong
+		// canTheyKillMe
 		
 	}  // end weighSurvivability
 	

@@ -16,7 +16,6 @@ public class GameManager {
 		
         SetUpGame setup = new SetUpGame();
         
-        // UnitLocationList(team)
 		UnitLocationList team0 = new UnitLocationList(0);
 		UnitLocationList team1 = new UnitLocationList(1);
 		
@@ -31,13 +30,14 @@ public class GameManager {
 		
 		bases = null;
 		
+// begin temporary graphics
 		ConsoleLogger console = new ConsoleLogger();
 		
-
 		console.draw(team0.getBasePositions(), team1.getBasePositions(), 
 				team0.getRegimentPositions(), team1.getRegimentPositions());
+// end temporary graphics
 		
-		Thread.sleep(2000);
+//		Thread.sleep(2000);
 		
 		while (Regiment.regimentCounter < (BoardBuilder.REGIMENTS_PER_TEAM * 2)) {
 			
@@ -78,14 +78,17 @@ public class GameManager {
 			
 			}  // end while loop
 			
+// begin temporary graphics
 			console.draw(team0.getBasePositions(), team1.getBasePositions(), 
 					team0.getRegimentPositions(), team1.getRegimentPositions());
+// end temporary graphics
 			
-			Thread.sleep(300);
+//			Thread.sleep(300);
 			
 		}  // end while loop
 		
 		
+		// this is where runGame() from the readme begins
 		for (int i = 0; i < (BoardBuilder.REGIMENTS_PER_TEAM); i++) {
 			
 			Regiment reg0 = team0.getRegimentByIndex(i);
@@ -113,12 +116,6 @@ public class GameManager {
 			}  // end if statement
 			
 		}  // end for loop (BoardBuilder.REGIMENTS_PER_TEAM)
-		
-		
-		
-		
-
-		
 		
 		
 		
