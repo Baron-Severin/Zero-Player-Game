@@ -23,6 +23,7 @@ public class UnitLocationList {
 	private ArrayList<PositionObject> regimentPositions = new ArrayList<PositionObject>();
 	private ArrayList<Base> ourBases = new ArrayList<Base>();
 	private ArrayList<PositionObject> basePositions = new ArrayList<PositionObject>();
+	private ArrayList<PredictionHolder> predictionHolders = new ArrayList<PredictionHolder>();
 	
 	public ArrayList<Regiment> getRegimentList() {
 		return regimentList;
@@ -50,6 +51,7 @@ public class UnitLocationList {
 		else {
 			regimentList.add(regiment);
 			regimentPositions.add(regiment.getPositionObject());
+			predictionHolders.add(new PredictionHolder(regiment));
 			
 			if (this.team == 0) {
 				team0RegimentLocations.put(regiment.getNumber(), regiment.getPositionObject());

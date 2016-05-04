@@ -19,6 +19,10 @@ public class GameManager {
 		UnitLocationList team0 = new UnitLocationList(0);
 		UnitLocationList team1 = new UnitLocationList(1);
 		
+		ArrayList<UnitLocationList> teamHolder = new ArrayList<UnitLocationList>();
+		teamHolder.add(team0);
+		teamHolder.add(team1);
+		
 		ArrayList<PositionObject> bases = setup.placeBases(3);
 
 		while (bases.size() > 0) {
@@ -37,7 +41,7 @@ public class GameManager {
 				team0.getRegimentPositions(), team1.getRegimentPositions());
 // end temporary graphics
 		
-		Thread.sleep(1000);
+//		Thread.sleep(1000);
 		
 		while (Regiment.regimentCounter < (BoardBuilder.REGIMENTS_PER_TEAM * 2)) {
 			
@@ -83,37 +87,29 @@ public class GameManager {
 					team0.getRegimentPositions(), team1.getRegimentPositions());
 // end temporary graphics
 			
-			Thread.sleep(100);
+//			Thread.sleep(100);
 			
 		}  // end while loop
 		
 		
 		// this is where runGame() from the readme begins
+		// for each regiment in a team
 		for (int i = 0; i < (BoardBuilder.REGIMENTS_PER_TEAM); i++) {
 			
-			Regiment reg0 = team0.getRegimentByIndex(i);
+			// for each team
+			for (UnitLocationList team: teamHolder) {
 			
-			if (!(reg0.checkOpenDirections().size() == 0)) {
+				Regiment regiment = team.getRegimentByIndex(i);
 				
-				reg0.logPossibleDirectionCheck();
-				
-				reg0.weighPossibleMoves();
-				
-			}  // end if statement
+				if (!(regiment.checkOpenDirections().size() == 0)) {
+					
+					regiment.logPossibleDirectionCheck();
+					
+					regiment.weighPossibleMoves();
+					
+				}  // end if statement
 			
-			/*
-			 *  BIZZARO LAND DIVIDER STARTS HERE
-			 */
-			
-			Regiment reg1 = team1.getRegimentByIndex(i);
-			
-			if (!(reg1.checkOpenDirections().size() == 0)) {
-			
-				reg1.logPossibleDirectionCheck();
-				
-				reg1.weighPossibleMoves();
-			
-			}  // end if statement
+			}  // end for team in teamHolder
 			
 		}  // end for loop (BoardBuilder.REGIMENTS_PER_TEAM)
 		

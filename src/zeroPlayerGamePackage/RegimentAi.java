@@ -14,6 +14,16 @@ public class RegimentAi extends HasGridPosition {
 	protected int team;
 	protected ArrayList<PositionValueAndType> possibleMoves;
 	protected PredictionHolder predictionHolder;
+	protected Double aggressiveModifier;
+	protected Double defensiveModifier;
+	
+	public Double getAggressiveModifier() {
+		return this.aggressiveModifier;
+	}  // end getAggressiveModifier
+	
+	public Double getDefensiveModifier() {
+		return this.defensiveModifier;
+	}  // end getDefensiveModifier
 
 	public void assignPredictionHolder(PredictionHolder prediction) {
 		this.predictionHolder = prediction;
@@ -56,15 +66,17 @@ public class RegimentAi extends HasGridPosition {
 	public void logPossibleDirectionCheck() {
 		
 		this.possibleMoves = checkOpenDirections();
-		
+		this.predictionHolder.populateSurroundings();
+		this.predictionHolder.populateSurroundingPerimeters();
 		
 	}  // end logPossibleDirectionCheck
 	
 	public void weighPossibleMoves() {
 		
-		Double aggressiveModifier = weighMorale().get(0);
-		Double defensiveModifier = weighMorale().get(1);
+		aggressiveModifier = weighMorale().get(0);
+		defensiveModifier = weighMorale().get(1);
 		
+		weighDefensive();
 		
 	}  // end weighPossibleMoves()
 	
@@ -97,7 +109,7 @@ public class RegimentAi extends HasGridPosition {
 	
 	public void weighDefensive() {
 		
-		// areFLanksOpen()
+		predictionHolder.areFlanksOpen();
 		// areAlliesNearby()  // and are they strong
 		// canTheyKillMe
 		

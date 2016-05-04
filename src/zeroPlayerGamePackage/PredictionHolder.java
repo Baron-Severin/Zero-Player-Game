@@ -25,7 +25,7 @@ public class PredictionHolder {
 
 	private Regiment regiment;
 	
-	public ArrayList<ArrayList<PositionValueAndType>> surroundingPerimeters = 
+	public ArrayList<ArrayList<PositionValueAndType>> surroundingPositionPerimeters = 
 			new ArrayList<ArrayList<PositionValueAndType>>();
 
 //	private ArrayList<PositionValueAndType> N = new ArrayList<PositionValueAndType>();
@@ -106,6 +106,7 @@ public class PredictionHolder {
 			
 			PositionObject place = positionFactory.directionToPositionObject(eightDirections.get(i));
 			
+			
 //			if (place.getPositionX() >= 0 
 //					&& place.getPositionX() <= (BoardBuilder.BOARD_WIDTH -1) 
 //					&& place.getPositionY() >= 0 
@@ -170,13 +171,49 @@ public class PredictionHolder {
 					
 				}  // end if statement
 				
-			}  // end testSurroundings for loop
+			}  // end for loop (testSurroundings)
 			
-			surroundingPerimeters.add(testedPerimeters);
+			surroundingPositionPerimeters.add(testedPerimeters);
 			
-		}  // end surroundingPositions for loop
+		}  // end for loop (surroundingPositions)
 		
 	}  // end populateSurroundingPerimeters
 	
+	public void areFlanksOpen() {
+		
+		// TODO finish this debug
+		// trying desperately to debug
+//		for (int i = 0; i < surroundingPositionPerimeters.size(); i++) {
+//			for (int j = 0; j < surroundingPositionPerimeters.get(i).size(); j++) {
+//				System.out.println(surroundingPositionPerimeters.get(i).get(j).getPosition().getPositionString());
+//			}
+//		}
+	
+//		for (ArrayList<PositionValueAndType> i: surroundingPositionPerimeters) {
+		for (int i = 0; i < surroundingPositionPerimeters.size(); i++) {
+			
+			int alliesNearby = 0;
+			
+			for (PositionValueAndType pvat: surroundingPositionPerimeters.get(i)) {
+				
+//				System.out.print("Checking " + pvat.getPosition().getPositionString());
+//				System.out.println(". Type = " + pvat.getType());
+				
+				if (pvat.getType() == "ally") {
+					
+					alliesNearby += 1;
+//					System.out.println("alliesNearby + 1 = " + alliesNearby);
+					
+				}  // end if type == ally
+				
+			}  // end for pvat in i
+			
+			
+//			System.out.print("There are " + alliesNearby + " allies near ");
+//			System.out.println(surroundingPositions.get(i).getPosition().getPositionString());
+			
+		}  // end for i in surroundingPerimeters
+	
+	}  // end areFlanksOpen
 	
 }  // end PredictionHolder
