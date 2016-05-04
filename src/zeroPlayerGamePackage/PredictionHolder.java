@@ -12,38 +12,37 @@ public class PredictionHolder {
 		this.regiment = regiment;
 		regiment.assignPredictionHolder(this);
 		
-		directionArrayHolder.add(N);
-		directionArrayHolder.add(NE);
-		directionArrayHolder.add(E);
-		directionArrayHolder.add(SE);
-		directionArrayHolder.add(S);
-		directionArrayHolder.add(SW);
-		directionArrayHolder.add(W);
-		directionArrayHolder.add(NW);
+//		directionArrayHolder.add(N);
+//		directionArrayHolder.add(NE);
+//		directionArrayHolder.add(E);
+//		directionArrayHolder.add(SE);
+//		directionArrayHolder.add(S);
+//		directionArrayHolder.add(SW);
+//		directionArrayHolder.add(W);
+//		directionArrayHolder.add(NW);
 	}  // end constructor
 	
-	private static int pvatCount = 0;
 
 	private Regiment regiment;
 	
-	public ArrayList<ArrayList<PositionValueAndType>> directionArrayHolder = 
+	public ArrayList<ArrayList<PositionValueAndType>> surroundingPerimeters = 
 			new ArrayList<ArrayList<PositionValueAndType>>();
 
-	private ArrayList<PositionValueAndType> N = new ArrayList<PositionValueAndType>();
-	private ArrayList<PositionValueAndType> NE = new ArrayList<PositionValueAndType>();
-	private ArrayList<PositionValueAndType> E = new ArrayList<PositionValueAndType>();
-	private ArrayList<PositionValueAndType> SE = new ArrayList<PositionValueAndType>();
-	private ArrayList<PositionValueAndType> S = new ArrayList<PositionValueAndType>();
-	private ArrayList<PositionValueAndType> SW = new ArrayList<PositionValueAndType>();
-	private ArrayList<PositionValueAndType> W = new ArrayList<PositionValueAndType>();
-	private ArrayList<PositionValueAndType> NW = new ArrayList<PositionValueAndType>();
+//	private ArrayList<PositionValueAndType> N = new ArrayList<PositionValueAndType>();
+//	private ArrayList<PositionValueAndType> NE = new ArrayList<PositionValueAndType>();
+//	private ArrayList<PositionValueAndType> E = new ArrayList<PositionValueAndType>();
+//	private ArrayList<PositionValueAndType> SE = new ArrayList<PositionValueAndType>();
+//	private ArrayList<PositionValueAndType> S = new ArrayList<PositionValueAndType>();
+//	private ArrayList<PositionValueAndType> SW = new ArrayList<PositionValueAndType>();
+//	private ArrayList<PositionValueAndType> W = new ArrayList<PositionValueAndType>();
+//	private ArrayList<PositionValueAndType> NW = new ArrayList<PositionValueAndType>();
 	
 	private ArrayList<PositionValueAndType> surroundingPositions = new ArrayList<PositionValueAndType>();
 	
 	
 	// This populates each position next to the Regiment, and each next to that.
 	// Used for weighing possible moves
-	public void populateDirectionHolder() {
+	public void populateSurroundings() {
 		
     	ArrayList<PositionObject> positions = surroundingsToPositions(regiment.getPositionObject());
 		
@@ -92,7 +91,7 @@ public class PredictionHolder {
 			
 		}  // end for loop
 		
-	}  // end populateDirectionHolder
+	}  // end populateSurroundingPositions
 	
 	public ArrayList<PositionObject> surroundingsToPositions(PositionObject thisPosition) {
 	
@@ -121,17 +120,63 @@ public class PredictionHolder {
 		
 	}  // surroundingsToPositions
 	
-	public void checkSurroundingPerimeters() {
+	// populates surroundingPerimeters and tests for type. Returns a PositionObject, 0, 
+	// Type pvat
+	public void populateSurroundingPerimeters() {
 		
 		for (int i = 0; i < surroundingPositions.size(); i++) {
 			
-			/*
-			 * TODO here
-			 */
+			PositionValueAndType tempPvat = surroundingPositions.get(i);
+			PositionObject testPosition = tempPvat.getPosition();
 			
-		}  // end for loop
+			ArrayList<PositionObject> testSurroundings = surroundingsToPositions(testPosition);
+			ArrayList<PositionValueAndType> testedPerimeters = new ArrayList<PositionValueAndType>();
+			
+			for (int j = 0; j < testSurroundings.size(); j++) {
+				
+				if (regiment.getTeam() == 0 
+						&& UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(i), 1)
+						|| regiment.getTeam() == 1 
+						&& UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(i), 0)) {
+					
+					PositionValueAndType pvat = new PositionValueAndType(testSurroundings.get(j), 
+							0, "enemy");
+					testedPerimeters.add(pvat);
+					
+				} else if (regiment.getTeam() == 0 
+						&& UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(i), 0)
+						|| regiment.getTeam() == 1 
+						&& UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(i), 1)) {
+					
+					PositionValueAndType pvat = new PositionValueAndType(testSurroundings.get(j), 
+							0, "ally");
+					testedPerimeters.add(pvat);
+					
+				} else if (testSurroundings.get(i).getPositionX() < 0
+						|| testSurroundings.get(i).getPositionX() >= BoardBuilder.BOARD_WIDTH
+						|| testSurroundings.get(i).getPositionY() < 0
+						|| testSurroundings.get(i).getPositionY() >= BoardBuilder.BOARD_HEIGHT) {
+					
+					PositionValueAndType pvat = new PositionValueAndType(testSurroundings.get(j), 
+							0, "blocked");
+					testedPerimeters.add(pvat);
+					
+				} else if (!(UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(i), 1))
+						&& !(UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(i), 0))) {
+					
+					PositionValueAndType pvat = new PositionValueAndType(testSurroundings.get(j), 
+							0, "empty");
+					testedPerimeters.add(pvat);
+					
+				}  // end if statement
+				
+			}  // end testSurroundings for loop
+			
+			surroundingPerimeters.add(testedPerimeters);
+			
+		}  // end surroundingPositions for loop
 		
-	}  // end checkSurroundingPerimeters
+	}  // end populateSurroundingPerimeters
 	
 	
 }  // end PredictionHolder

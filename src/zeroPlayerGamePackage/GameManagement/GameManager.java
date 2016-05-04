@@ -37,7 +37,7 @@ public class GameManager {
 				team0.getRegimentPositions(), team1.getRegimentPositions());
 // end temporary graphics
 		
-//		Thread.sleep(2000);
+		Thread.sleep(1000);
 		
 		while (Regiment.regimentCounter < (BoardBuilder.REGIMENTS_PER_TEAM * 2)) {
 			
@@ -83,7 +83,7 @@ public class GameManager {
 					team0.getRegimentPositions(), team1.getRegimentPositions());
 // end temporary graphics
 			
-//			Thread.sleep(300);
+			Thread.sleep(100);
 			
 		}  // end while loop
 		
@@ -119,6 +119,8 @@ public class GameManager {
 		
 		
 		
+		
+		
 		// START TEST CODE
 		// much of this no longer applies, but some of it saves a bit of time when debugging
 //		
@@ -127,7 +129,10 @@ public class GameManager {
 //			
 //			PredictionHolder tempPredicter = new PredictionHolder(i);
 //			predicters.add(tempPredicter);
-//			tempPredicter.populateDirectionHolder();
+//			tempPredicter.populateSurroundings();
+//		    tempPredicter.populateSurroundingPerimeters();
+//		    
+//		    System.out.println(i.getPredictionHolder().surroundingPerimeters);
 //		}  // end for in loop
 //		
 //		

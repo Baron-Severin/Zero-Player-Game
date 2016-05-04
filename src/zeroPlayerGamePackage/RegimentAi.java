@@ -19,6 +19,10 @@ public class RegimentAi extends HasGridPosition {
 		this.predictionHolder = prediction;
 	}  // end assignPredictionHolder
 	
+	public PredictionHolder getPredictionHolder() {
+		return this.predictionHolder;
+	}  // end getPredictionHolder
+	
 	public ArrayList<PositionValueAndType> checkOpenDirections() {
 		ArrayList<String> directions = BoardBuilder.eightDirections();
 		ArrayList<PositionValueAndType> openDirections = new ArrayList<PositionValueAndType>();
@@ -98,7 +102,6 @@ public class RegimentAi extends HasGridPosition {
 		// canTheyKillMe
 		
 	}  // end weighSurvivability
-	
 	
 	
 }  // end RegimentAi
