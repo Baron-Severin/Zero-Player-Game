@@ -136,34 +136,34 @@ public class PredictionHolder {
 			for (int j = 0; j < testSurroundings.size(); j++) {
 				
 				if (regiment.getTeam() == 0 
-						&& UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(i), 1)
+						&& UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(j), 1)
 						|| regiment.getTeam() == 1 
-						&& UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(i), 0)) {
+						&& UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(j), 0)) {
 					
 					PositionValueAndType pvat = new PositionValueAndType(testSurroundings.get(j), 
 							0, "enemy");
 					testedPerimeters.add(pvat);
 					
 				} else if (regiment.getTeam() == 0 
-						&& UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(i), 0)
+						&& UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(j), 0)
 						|| regiment.getTeam() == 1 
-						&& UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(i), 1)) {
+						&& UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(j), 1)) {
 					
 					PositionValueAndType pvat = new PositionValueAndType(testSurroundings.get(j), 
 							0, "ally");
 					testedPerimeters.add(pvat);
 					
-				} else if (testSurroundings.get(i).getPositionX() < 0
-						|| testSurroundings.get(i).getPositionX() >= BoardBuilder.BOARD_WIDTH
-						|| testSurroundings.get(i).getPositionY() < 0
-						|| testSurroundings.get(i).getPositionY() >= BoardBuilder.BOARD_HEIGHT) {
+				} else if (testSurroundings.get(j).getPositionX() < 0
+						|| testSurroundings.get(j).getPositionX() >= BoardBuilder.BOARD_WIDTH
+						|| testSurroundings.get(j).getPositionY() < 0
+						|| testSurroundings.get(j).getPositionY() >= BoardBuilder.BOARD_HEIGHT) {
 					
 					PositionValueAndType pvat = new PositionValueAndType(testSurroundings.get(j), 
 							0, "blocked");
 					testedPerimeters.add(pvat);
 					
-				} else if (!(UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(i), 1))
-						&& !(UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(i), 0))) {
+				} else if (!(UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(j), 1))
+						&& !(UnitLocationList.isPositionOccupiedByTeam(testSurroundings.get(j), 0))) {
 					
 					PositionValueAndType pvat = new PositionValueAndType(testSurroundings.get(j), 
 							0, "empty");
@@ -181,34 +181,21 @@ public class PredictionHolder {
 	
 	public void areFlanksOpen() {
 		
-		// TODO finish this debug
-		// trying desperately to debug
-//		for (int i = 0; i < surroundingPositionPerimeters.size(); i++) {
-//			for (int j = 0; j < surroundingPositionPerimeters.get(i).size(); j++) {
-//				System.out.println(surroundingPositionPerimeters.get(i).get(j).getPosition().getPositionString());
-//			}
-//		}
-	
-//		for (ArrayList<PositionValueAndType> i: surroundingPositionPerimeters) {
 		for (int i = 0; i < surroundingPositionPerimeters.size(); i++) {
 			
 			int alliesNearby = 0;
 			
 			for (PositionValueAndType pvat: surroundingPositionPerimeters.get(i)) {
 				
-//				System.out.print("Checking " + pvat.getPosition().getPositionString());
-//				System.out.println(". Type = " + pvat.getType());
-				
 				if (pvat.getType() == "ally") {
 					
 					alliesNearby += 1;
-//					System.out.println("alliesNearby + 1 = " + alliesNearby);
 					
 				}  // end if type == ally
 				
 			}  // end for pvat in i
 			
-			
+			// debugging code
 //			System.out.print("There are " + alliesNearby + " allies near ");
 //			System.out.println(surroundingPositions.get(i).getPosition().getPositionString());
 			
