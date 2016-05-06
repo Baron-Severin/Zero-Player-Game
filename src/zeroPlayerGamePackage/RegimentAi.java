@@ -16,6 +16,8 @@ public class RegimentAi extends HasGridPosition {
 	protected PredictionHolder predictionHolder;
 	protected Double aggressiveModifier;
 	protected Double defensiveModifier;
+	protected String fuzzyMorale;
+	protected String fuzzyHealth;
 	
 	public Double getAggressiveModifier() {
 		return this.aggressiveModifier;
@@ -32,6 +34,42 @@ public class RegimentAi extends HasGridPosition {
 	public PredictionHolder getPredictionHolder() {
 		return this.predictionHolder;
 	}  // end getPredictionHolder
+	
+	public void buildFuzzyMorale() {
+		if (this.morale >= 80) {
+			this.fuzzyMorale = "high";
+		} else if (this.morale < 80 && this.morale >= 50) {
+			this.fuzzyMorale = "medium";
+		} else if (this.morale < 50 && this.morale >= 10) {
+			this.fuzzyMorale = "low";
+		} else {
+			this.fuzzyMorale = "critical";
+		}  // end if statement
+		
+	}  // end getFuzzyMorale
+	
+	public String getFuzzyMorale() {
+		buildFuzzyMorale();
+		return this.fuzzyMorale;
+	}  // end getFuzzyMorale
+		
+	public void buildFuzzyHealth() {
+		if (this.health >= 80) {
+			this.fuzzyHealth = "high";
+		} else if (this.health < 80 && this.health >= 50) {
+			this.fuzzyHealth = "medium";
+		} else if (this.health < 50 && this.health >= 10) {
+			this.fuzzyHealth = "low";
+		} else {
+			this.fuzzyHealth = "health";
+		}  // end if statement
+		
+	}  // end getFuzzyMorale
+	
+	public String getFuzzyHealth() {
+		buildFuzzyHealth();
+		return this.fuzzyHealth;
+	}
 	
 	public ArrayList<PositionValueAndType> checkOpenDirections() {
 		ArrayList<String> directions = BoardBuilder.eightDirections();
@@ -71,12 +109,12 @@ public class RegimentAi extends HasGridPosition {
 		
 	}  // end logPossibleDirectionCheck
 	
-	public void weighPossibleMoves() {
+	public void weighPossibleMoves(UnitLocationList team) {
 		
 		aggressiveModifier = weighMorale().get(0);
 		defensiveModifier = weighMorale().get(1);
 		
-		weighDefensive();
+		weighDefensive(team);
 		
 	}  // end weighPossibleMoves()
 	
@@ -85,16 +123,16 @@ public class RegimentAi extends HasGridPosition {
 		double aggressiveModifier = 0;
 		double defensiveModifier = 0;
 		
-		if (this.morale >= 80) {
+		if (this.getFuzzyMorale().equals("high")) {
 			aggressiveModifier = 1.2;
 			defensiveModifier = .6;
-		} else if (this.morale < 80 && this.morale >= 50) {
+		} else if (this.getFuzzyMorale().equals("medium")) {
 			aggressiveModifier = 1;
 			defensiveModifier = 1;
-		} else if (this.morale < 50 && this.morale >= 10) {
+		} else if (this.getFuzzyMorale().equals("low")) {
 			aggressiveModifier = .6;
 			defensiveModifier = 1;
-		} else if (this.morale < 10) {
+		} else if (this.getFuzzyMorale().equals("critical")) {
 			aggressiveModifier = 0;
 			defensiveModifier = 1;
 		}  // end if statement
@@ -107,9 +145,9 @@ public class RegimentAi extends HasGridPosition {
 		
 	}  // end weighMorale
 	
-	public void weighDefensive() {
+	public void weighDefensive(UnitLocationList team) {
 		
-		predictionHolder.loopOverSurroundingPerimeters();
+		predictionHolder.loopOverSurroundingPerimeters(team);
 		// areAlliesNearby()  // and are they strong
 		// canTheyKillMe
 		

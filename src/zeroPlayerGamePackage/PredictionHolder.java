@@ -181,7 +181,7 @@ public class PredictionHolder {
 	}  // end populateSurroundingPerimeters
 	
 	// sets up / calls: areFlanksOpen, 
-	public void loopOverSurroundingPerimeters() {
+	public void loopOverSurroundingPerimeters(UnitLocationList team) {
 		
 		HashMap<Integer, PositionObject> allyTeam;
 		HashMap<Integer, PositionObject> enemyTeam;
@@ -213,9 +213,14 @@ public class PredictionHolder {
 					
 					alliesNearby += 1;
 					
-//					if (allyTeam.containsValue(pvat.getPosition()) && ) {
-//					TODO left off here.  checking for healthy allies	
-//					}
+					Regiment regiment = team.getRegimentByPosition(pvat.getPosition());
+					// if unit is not critical or low health or morale
+					if (!(regiment.getFuzzyHealth().equals("critical")
+							|| regiment.getFuzzyHealth().equals("low")
+							|| regiment.getFuzzyMorale().equals("critical")
+							|| regiment.getFuzzyMorale().equals("low"))) {
+					healthyAlliesNearby += 1;
+					}
 					
 				}  // end if type == ally
 				
@@ -226,11 +231,16 @@ public class PredictionHolder {
 			openFlanksScore *= this.regiment.getDefensiveModifier();
 			surroundingPositions.get(i).addValue(openFlanksScore);
 			
+			double healthyAlliesNearbyScore = areHealthyAlliesNearby(healthyAlliesNearby);
+			
+			healthyAlliesNearbyScore *= this.regiment.getDefensiveModifier();
+			surroundingPositions.get(i).addValue(healthyAlliesNearbyScore);
+			
 		}  // end for i in surroundingPerimeters
 	
 	}  // end loopOverSurroundingPerimeters
 	
-	public double areFlanksOpen(double alliesNearby) {
+	public double areFlanksOpen(int alliesNearby) {
 		if (alliesNearby < 2) {
 			return -4;
 		} else {
@@ -238,8 +248,16 @@ public class PredictionHolder {
 		}  // end if statement
 	}  // end areFlanksOpen
 	
-	public void areHealthyAlliesNearby() {
-		
+	public double areHealthyAlliesNearby(int healthyAlliesNearby) {
+		if (healthyAlliesNearby < 2) {
+			return -4;
+		} else if (healthyAlliesNearby < 4) {
+			return 0;
+		} else if (healthyAlliesNearby < 6) {
+			return 3;
+		} else {
+			return 5;
+		}
 	}
 	
 }  // end PredictionHolder

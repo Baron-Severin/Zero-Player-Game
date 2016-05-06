@@ -33,11 +33,29 @@ public class UnitLocationList {
 		Regiment regiment = this.regimentList.get(index);
 		return regiment;
 	}  // end getRegimentByIndex
+	
+	public Regiment getRegimentByPosition(PositionObject position) {
+		for (int i = 0; i < regimentPositions.size(); i++) {
+			
+			if (regimentPositions.get(i).positionEquality(position)) {
+				return regimentList.get(i);
+			}
+		}  // end for loop (regimentPositions.size)
+			
+		System.out.println("Team" + this.team + "UnitLocationList.getRegimentByPosition found"
+				+ " no regiment at that position");
+		new Exception().printStackTrace();
+		
+		// returns nonsense Regiment
+		PositionObject fakePosition = new PositionObject(99, 99);
+		Regiment fakeRegiment = new Regiment(99, fakePosition);
+		return fakeRegiment;
+			
+	}  // end getRegimentByPosition
 
 	public ArrayList<PositionObject> getRegimentPositions() {
 		return regimentPositions;
-	}  // end getRegimentPositions
-	
+	}  // end getRegimentPositions	
 	
 	public void addUnit(Regiment regiment) {
 		if (regimentList.contains(regiment)) {
