@@ -114,7 +114,8 @@ public class RegimentAi extends HasGridPosition {
 		aggressiveModifier = weighMorale().get(0);
 		defensiveModifier = weighMorale().get(1);
 		
-		weighDefensive(myTeam, enemyTeam);
+		// this method weighs all of the various ai factors
+		predictionHolder.loopOverSurroundingPerimeters(myTeam, enemyTeam);
 		
 	}  // end weighPossibleMoves()
 	
@@ -144,14 +145,5 @@ public class RegimentAi extends HasGridPosition {
 		return modifiers;
 		
 	}  // end weighMorale
-	
-	public void weighDefensive(UnitLocationList myTeam, UnitLocationList enemyTeam) {
-		
-		predictionHolder.loopOverSurroundingPerimeters(myTeam, enemyTeam);
-		// areAlliesNearby()  // and are they strong
-		// canTheyKillMe
-		
-	}  // end weighSurvivability
-	
 	
 }  // end RegimentAi

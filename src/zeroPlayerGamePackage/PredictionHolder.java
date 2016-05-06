@@ -13,14 +13,6 @@ public class PredictionHolder {
 		this.regiment = regiment;
 		regiment.assignPredictionHolder(this);
 		
-//		directionArrayHolder.add(N);
-//		directionArrayHolder.add(NE);
-//		directionArrayHolder.add(E);
-//		directionArrayHolder.add(SE);
-//		directionArrayHolder.add(S);
-//		directionArrayHolder.add(SW);
-//		directionArrayHolder.add(W);
-//		directionArrayHolder.add(NW);
 	}  // end constructor
 	
 
@@ -28,15 +20,6 @@ public class PredictionHolder {
 	
 	public ArrayList<ArrayList<PositionValueAndType>> surroundingPositionPerimeters = 
 			new ArrayList<ArrayList<PositionValueAndType>>();
-
-//	private ArrayList<PositionValueAndType> N = new ArrayList<PositionValueAndType>();
-//	private ArrayList<PositionValueAndType> NE = new ArrayList<PositionValueAndType>();
-//	private ArrayList<PositionValueAndType> E = new ArrayList<PositionValueAndType>();
-//	private ArrayList<PositionValueAndType> SE = new ArrayList<PositionValueAndType>();
-//	private ArrayList<PositionValueAndType> S = new ArrayList<PositionValueAndType>();
-//	private ArrayList<PositionValueAndType> SW = new ArrayList<PositionValueAndType>();
-//	private ArrayList<PositionValueAndType> W = new ArrayList<PositionValueAndType>();
-//	private ArrayList<PositionValueAndType> NW = new ArrayList<PositionValueAndType>();
 	
 	public ArrayList<PositionValueAndType> surroundingPositions = new ArrayList<PositionValueAndType>();
 	
@@ -227,6 +210,8 @@ public class PredictionHolder {
 					
 					}  // end if ally is healthy
 					
+				}  // end if regiment is ally
+					
 					if (pvat.getType() == "enemy") {
 						
 						regiment = enemyTeam.getRegimentByPosition(pvat.getPosition());
@@ -241,8 +226,6 @@ public class PredictionHolder {
 						}  // end if enemy is healthy
 
 					}  // end if regiment is enemy
-					
-				}  // end if type == ally
 				
 			}  // end for pvat in i
 			
@@ -261,7 +244,15 @@ public class PredictionHolder {
 			healthyEnemiesNearbyScore *= this.regiment.getDefensiveModifier();
 			surroundingPositions.get(i).addValue(healthyEnemiesNearbyScore);
 			
-		}  // end for i in surroundingPerimeters
+			PositionObject currentLocation = this.regiment.getPositionObject();
+			PositionObject destination = surroundingPositions.get(i).getPosition();
+			double towardsObjectivesScore = generateTowardsEnemyObjectivesScore(currentLocation, 
+					destination, myTeam, enemyTeam);
+			
+			// morale weighting done within generateTowardsEnemyObjectivesScore
+			surroundingPositions.get(i).addValue(towardsObjectivesScore);
+			
+		}  // end for i in surroundingPositionPerimeters
 	
 	}  // end loopOverSurroundingPerimeters
 	
@@ -283,6 +274,7 @@ public class PredictionHolder {
 		} else {
 			return 5;
 		}  // end if statement
+		
 	}  // end areHealthyAlliesNearby
 	
 	public double areHealthyEnemiesNearby(int healthyEnemiesNearby) {
@@ -296,7 +288,101 @@ public class PredictionHolder {
 			return -4;
 		} else {
 			return -7;
-		}
+		}  // end if statement
+		
 	}  // end areHealthyEnemiesNearby
+	
+	public double generateTowardsEnemyObjectivesScore(PositionObject currentLocation, 
+			PositionObject destination, UnitLocationList myTeam, UnitLocationList enemyTeam) {
+		
+		boolean towardsObjectives = isThisTowardsEnemyObjectives(currentLocation, destination, 
+				myTeam, enemyTeam);
+		
+		Regiment regiment = this.regiment;
+		
+		if (regiment.getFuzzyMorale().equals("high") && towardsObjectives == true) {
+			return 8;
+		} else if (regiment.getFuzzyMorale().equals("high") && towardsObjectives == false) {
+			return -3;
+		} else if (regiment.getFuzzyMorale().equals("medium") && towardsObjectives == true) {
+			return 5;
+		} else if (regiment.getFuzzyMorale().equals("medium") && towardsObjectives == false) {
+			return -3;
+		} else if (regiment.getFuzzyMorale().equals("low")) {
+			return 0;
+		} else if (regiment.getFuzzyMorale().equals("critical") && towardsObjectives == true) {
+			return -3;
+		} else if (regiment.getFuzzyMorale().equals("critical") && towardsObjectives == false) {
+			return 3;
+		} else {
+			System.out.println("PredictionHolder.generateTowardsEnemyObjectivesScore given invalid arguments");
+			new Exception().printStackTrace();
+			return 9999;
+		}  // end morale / towards combination if statement
+		
+	}  // end generateTowardsEnemyObjectivesScore
+	
+	public boolean isThisTowardsEnemyObjectives(PositionObject currentLocation, 
+			PositionObject destination, UnitLocationList myTeam, UnitLocationList enemyTeam) {
+		
+		ArrayList<PositionObject> enemyBases = enemyTeam.getBasePositions();
+		
+		int xMove = (destination.getPositionX()) - (currentLocation.getPositionX());
+		int yMove = (destination.getPositionY()) - (currentLocation.getPositionY());
+		
+		ArrayList<Integer> distanceToBases = new ArrayList<Integer>();
+		int currentShortestDistance = 999999;
+		PositionObject currentDestination = new PositionObject(9999, 9999);
+		
+		for (int i = 0; i < enemyBases.size(); i++) {
+			
+			int distanceX = Math.abs((enemyBases.get(i).getPositionX() - currentLocation.getPositionX()));
+			int distanceY = Math.abs((enemyBases.get(i).getPositionY() - currentLocation.getPositionY()));
+			
+			if (distanceX <= currentShortestDistance && distanceY <= currentShortestDistance) {
+				
+				currentDestination = enemyBases.get(i).getPositionObject();
+				
+				if (distanceX > distanceY) {
+					currentShortestDistance = distanceX;
+				} else {
+					currentShortestDistance = distanceY;
+				}  // end if distance is bigger
+				
+			}  // end if this distance is shorter
+			
+		}  // end for loop (enemyBases.size)
+		
+		int correctX = currentDestination.getPositionX() - currentLocation.getPositionX();
+		int correctY = currentDestination.getPositionY() - currentLocation.getPositionY();
+		
+		boolean goodX = false;
+		boolean goodY = false;
+		
+		if ((correctX > 0 && xMove > 0) || (correctX == 0 && xMove == 0) 
+				|| (correctX < 0 && xMove < 0)) {
+			
+			goodX = true;
+			
+		}  // end if X is good
+		
+		if ((correctY > 0 && yMove > 0) || (correctY == 0 && yMove == 0) 
+				|| (correctY < 0 && yMove < 0)) {
+			
+			goodY = true;
+			
+		}  // end if Y is good
+		
+		if (goodX == true && goodY == true) {
+			
+			return true;
+			
+		} else {
+			
+			return false;
+			
+		}  // end if goodX && goodY are true
+		
+	}  // end isThisTowardsObjectives
 	
 }  // end PredictionHolder

@@ -7,9 +7,6 @@ public class Base extends HasGridPosition {
 	public Base(int team){
 		super();
 		this.team = team;
-		//
-		// TODO put stuff here
-		//
 	}  // end constructor
 
 	private int importance; // reserved
@@ -18,6 +15,6 @@ public class Base extends HasGridPosition {
 
 	private int getTeam() {
 		return team;
-	}
+	}  // end getTeam
 	
 }  // end Objective

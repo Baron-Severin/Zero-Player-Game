@@ -210,6 +210,10 @@ public class UnitLocationList {
 		
 	}  // end addBase
 	
+//	public void destroyBase(Base base) {
+//		// TODO put something here
+//	}  // end destroyBase
+	
 	public ArrayList<Base> getBases(){
 		return this.ourBases;
 	}  // end getBases	 

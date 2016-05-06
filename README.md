@@ -23,8 +23,8 @@ runGame() // this loops over each unit
 			alliesStrength()
 			enemiesDamage()  // compares to my hp
 		weighOffensive()
-		    enemiesHp()
 		    nearbyObjectives()
+		    enemiesHp()
 		    ifMoveIsAttack { 
 		        canIWin() }
 		randomness()
