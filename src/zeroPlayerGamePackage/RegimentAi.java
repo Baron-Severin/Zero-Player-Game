@@ -12,6 +12,7 @@ public class RegimentAi extends HasGridPosition {
 	protected int health;
 	protected int id;
 	protected int team;
+	protected String personality; // reserved
 	protected ArrayList<PositionValueAndType> possibleMoves;
 	protected PredictionHolder predictionHolder;
 	protected Double aggressiveModifier;

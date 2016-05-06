@@ -25,7 +25,7 @@ public class PositionValueAndType {
 		return type;
 	}  // end getType
 	
-	public void setValue(int value) {
+	public void setValue(double value) {
 		this.value = value;
 	}  // end setValue
 	

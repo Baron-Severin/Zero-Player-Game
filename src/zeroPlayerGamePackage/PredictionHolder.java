@@ -193,38 +193,44 @@ public class PredictionHolder {
 			
 			for (PositionValueAndType pvat: surroundingPositionPerimeters.get(i)) {
 				
-				Regiment regiment;
+				Regiment allyRegiment;
 				
 				if (pvat.getType() == "ally") {
 					
 					alliesNearby += 1;
 					
-					regiment = myTeam.getRegimentByPosition(pvat.getPosition());
+					allyRegiment = myTeam.getRegimentByPosition(pvat.getPosition());
 					// if unit is not critical or low health or morale
-					if (!(regiment.getFuzzyHealth().equals("critical")
-							|| regiment.getFuzzyHealth().equals("low")
-							|| regiment.getFuzzyMorale().equals("critical")
-							|| regiment.getFuzzyMorale().equals("low"))) {
+					if (!(allyRegiment.getFuzzyHealth().equals("critical")
+							|| allyRegiment.getFuzzyHealth().equals("low")
+							|| allyRegiment.getFuzzyMorale().equals("critical")
+							|| allyRegiment.getFuzzyMorale().equals("low"))) {
 						
 					healthyAlliesNearby += 1;
 					
 					}  // end if ally is healthy
 					
 				}  // end if regiment is ally
+				
+				
 					
-					if (pvat.getType() == "enemy") {
-						
-						regiment = enemyTeam.getRegimentByPosition(pvat.getPosition());
-						// if unit is not critical or low health or morale
-						if (!(regiment.getFuzzyHealth().equals("critical")
-								|| regiment.getFuzzyHealth().equals("low")
-								|| regiment.getFuzzyMorale().equals("critical")
-								|| regiment.getFuzzyMorale().equals("low"))) {
-						
-							healthyEnemiesNearby += 1;
+				if (pvat.getType() == "enemy") {
+					
+					Regiment enemyRegiment = enemyTeam.getRegimentByPosition(pvat.getPosition());
+					// if unit is not critical or low health or morale
+					if (!(enemyRegiment.getFuzzyHealth().equals("critical")
+							|| enemyRegiment.getFuzzyHealth().equals("low")
+							|| enemyRegiment.getFuzzyMorale().equals("critical")
+							|| enemyRegiment.getFuzzyMorale().equals("low"))) {
+					
+						healthyEnemiesNearby += 1;
 							
 						}  // end if enemy is healthy
-
+					
+					double compareHealthToEnemyScore = compareHealthToEnemy(enemyRegiment);
+					
+					surroundingPositions.get(i).addValue(compareHealthToEnemyScore);
+					
 					}  // end if regiment is enemy
 				
 			}  // end for pvat in i
@@ -246,17 +252,39 @@ public class PredictionHolder {
 			
 			PositionObject currentLocation = this.regiment.getPositionObject();
 			PositionObject destination = surroundingPositions.get(i).getPosition();
-			double towardsObjectivesScore = generateTowardsEnemyObjectivesScore(currentLocation, 
+			double towardsEnemyObjectivesScore = generateTowardsEnemyObjectivesScore(currentLocation, 
 					destination, myTeam, enemyTeam);
 			
 			// morale weighting done within generateTowardsEnemyObjectivesScore
-			surroundingPositions.get(i).addValue(towardsObjectivesScore);
+			surroundingPositions.get(i).addValue(towardsEnemyObjectivesScore);
+			
+			double towardsAlliedObjectivesScore = generateTowardsAlliedObjectivesScore(currentLocation, 
+					destination, myTeam, enemyTeam);
+			
+			// morale weighting done within generateTowardsAlliedObjectivesScore
+			surroundingPositions.get(i).addValue(towardsAlliedObjectivesScore);
+			
+			double randomizedValue = surroundingPositions.get(i).getValue();
+			
+			randomizedValue = randomizeMyValue(randomizedValue);
+			surroundingPositions.get(i).setValue(randomizedValue);
+			
+//          TODO Uncomment this code to view example position values
+//			     Note that all units start at high morale, and so want to move
+//			     towards objectives
+//			   //  BEGIN TEST CODE
+//			System.out.println("Regiment #" + this.regiment.id + ":");
+//			for (int testCode = 0; testCode < surroundingPositions.size(); testCode++) {
+//				System.out.print("Position " + surroundingPositions.get(testCode).getPosition().getPositionString());
+//				System.out.println(" Value: " + surroundingPositions.get(testCode).getValue());
+//			}  // END TEST CODE
+//
 			
 		}  // end for i in surroundingPositionPerimeters
 	
 	}  // end loopOverSurroundingPerimeters
 	
-	public double areFlanksOpen(int alliesNearby) {
+	private double areFlanksOpen(int alliesNearby) {
 		if (alliesNearby < 2) {
 			return -4;
 		} else {
@@ -264,7 +292,7 @@ public class PredictionHolder {
 		}  // end if statement
 	}  // end areFlanksOpen
 	
-	public double areHealthyAlliesNearby(int healthyAlliesNearby) {
+	private double areHealthyAlliesNearby(int healthyAlliesNearby) {
 		if (healthyAlliesNearby < 2) {
 			return -4;
 		} else if (healthyAlliesNearby < 4) {
@@ -277,7 +305,7 @@ public class PredictionHolder {
 		
 	}  // end areHealthyAlliesNearby
 	
-	public double areHealthyEnemiesNearby(int healthyEnemiesNearby) {
+	private double areHealthyEnemiesNearby(int healthyEnemiesNearby) {
 		if (healthyEnemiesNearby < 1) {
 			return 1;
 		} else if (healthyEnemiesNearby < 2) {
@@ -292,11 +320,11 @@ public class PredictionHolder {
 		
 	}  // end areHealthyEnemiesNearby
 	
-	public double generateTowardsEnemyObjectivesScore(PositionObject currentLocation, 
+	private double generateTowardsEnemyObjectivesScore(PositionObject currentLocation, 
 			PositionObject destination, UnitLocationList myTeam, UnitLocationList enemyTeam) {
 		
-		boolean towardsObjectives = isThisTowardsEnemyObjectives(currentLocation, destination, 
-				myTeam, enemyTeam);
+		boolean towardsObjectives = isThisTowardsObjectives(currentLocation, destination, 
+				enemyTeam);
 		
 		Regiment regiment = this.regiment;
 		
@@ -322,10 +350,38 @@ public class PredictionHolder {
 		
 	}  // end generateTowardsEnemyObjectivesScore
 	
-	public boolean isThisTowardsEnemyObjectives(PositionObject currentLocation, 
+	private double generateTowardsAlliedObjectivesScore(PositionObject currentLocation, 
 			PositionObject destination, UnitLocationList myTeam, UnitLocationList enemyTeam) {
 		
-		ArrayList<PositionObject> enemyBases = enemyTeam.getBasePositions();
+		boolean towardsObjectives = isThisTowardsObjectives(currentLocation, destination, 
+				myTeam);
+		
+		Regiment regiment = this.regiment;
+		
+		if (regiment.getFuzzyMorale().equals("high")) {
+			return 0;
+		} else if (regiment.getFuzzyMorale().equals("medium")) {
+			return 0;
+		} else if (regiment.getFuzzyMorale().equals("low") && towardsObjectives == true) {
+			return 3;
+		} else if (regiment.getFuzzyMorale().equals("low") && towardsObjectives == false) {
+			return 0;
+		} else if (regiment.getFuzzyMorale().equals("critical") && towardsObjectives == true) {
+			return 8;
+		} else if (regiment.getFuzzyMorale().equals("critical") && towardsObjectives == false) {
+			return 0;
+		} else {
+			System.out.println("PredictionHolder.generateTowardsEnemyObjectivesScore given invalid arguments");
+			new Exception().printStackTrace();
+			return 9999;
+		}  // end morale / towards combination if statement
+		
+	}  // end generateTowardsEnemyObjectivesScore
+	
+	private boolean isThisTowardsObjectives(PositionObject currentLocation, 
+			PositionObject destination, UnitLocationList destinationBases) {
+		
+		ArrayList<PositionObject> destinations = destinationBases.getBasePositions();
 		
 		int xMove = (destination.getPositionX()) - (currentLocation.getPositionX());
 		int yMove = (destination.getPositionY()) - (currentLocation.getPositionY());
@@ -334,14 +390,14 @@ public class PredictionHolder {
 		int currentShortestDistance = 999999;
 		PositionObject currentDestination = new PositionObject(9999, 9999);
 		
-		for (int i = 0; i < enemyBases.size(); i++) {
+		for (int i = 0; i < destinations.size(); i++) {
 			
-			int distanceX = Math.abs((enemyBases.get(i).getPositionX() - currentLocation.getPositionX()));
-			int distanceY = Math.abs((enemyBases.get(i).getPositionY() - currentLocation.getPositionY()));
+			int distanceX = Math.abs((destinations.get(i).getPositionX() - currentLocation.getPositionX()));
+			int distanceY = Math.abs((destinations.get(i).getPositionY() - currentLocation.getPositionY()));
 			
 			if (distanceX <= currentShortestDistance && distanceY <= currentShortestDistance) {
 				
-				currentDestination = enemyBases.get(i).getPositionObject();
+				currentDestination = destinations.get(i).getPositionObject();
 				
 				if (distanceX > distanceY) {
 					currentShortestDistance = distanceX;
@@ -384,5 +440,65 @@ public class PredictionHolder {
 		}  // end if goodX && goodY are true
 		
 	}  // end isThisTowardsObjectives
+	
+	private double compareHealthToEnemy(Regiment enemyRegiment) {
+		
+		int healthSum = regiment.health + enemyRegiment.health;
+		double healthGoodRatio = regiment.health / healthSum;
+		String fuzzyHealthDifferential;
+		
+		if (healthGoodRatio > .66) {
+			fuzzyHealthDifferential = "high";
+		} else if (healthGoodRatio > .45) {
+			fuzzyHealthDifferential = "medium";
+		} else if (healthGoodRatio > .25) {
+			fuzzyHealthDifferential = "low";
+		} else {
+			fuzzyHealthDifferential = "critical";
+		}
+		
+		if (regiment.getFuzzyMorale().equals("high") && !(fuzzyHealthDifferential.equals("critical"))) {
+			return 15;
+		} else if (regiment.getFuzzyMorale().equals("high")) {
+			return 5;
+		} else if (regiment.getFuzzyMorale().equals("medium") && fuzzyHealthDifferential.equals("high")) {
+			return 8;
+		} else if (regiment.getFuzzyMorale().equals("medium") && fuzzyHealthDifferential.equals("medium")) {
+			return 4;
+		} else if (regiment.getFuzzyMorale().equals("medium") && fuzzyHealthDifferential.equals("low")) {
+			return 0;
+		} else if (regiment.getFuzzyMorale().equals("medium") && fuzzyHealthDifferential.equals("critical")) {
+			return -4;
+		} else if (regiment.getFuzzyMorale().equals("low") && fuzzyHealthDifferential.equals("high")) {
+			return 6;
+		} else if (regiment.getFuzzyMorale().equals("low") && fuzzyHealthDifferential.equals("medium")) {
+			return 2;
+		} else if (regiment.getFuzzyMorale().equals("low") && fuzzyHealthDifferential.equals("low")) {
+			return -2;
+		} else if (regiment.getFuzzyMorale().equals("low") && fuzzyHealthDifferential.equals("critical")) {
+			return -6;
+		} else if (regiment.getFuzzyMorale().equals("critical") && fuzzyHealthDifferential.equals("high")) {
+			return 2;
+		} else if (regiment.getFuzzyMorale().equals("critical") && fuzzyHealthDifferential.equals("medium")) {
+			return -6;
+		} else if (regiment.getFuzzyMorale().equals("critical")) {
+			return -10;
+		} else {
+			System.out.println("PredictionHolder.compareHealthToEnemy has failed to meet any of "
+					+ "its conditions");
+			new Exception().printStackTrace();
+			return 9999;
+		}
+		
+	}  // end compareHealthToEnemy
+	
+	private double randomizeMyValue(double value) {
+		
+		// generate random number between .75 and 1.25
+		double random = (Math.random() * .5) + .75;
+		value = value * random;
+		
+		return value;
+	}
 	
 }  // end PredictionHolder
