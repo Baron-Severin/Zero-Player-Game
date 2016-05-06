@@ -93,19 +93,28 @@ public class GameManager {
 		
 		
 		// this is where runGame() from the readme begins
-		// for each regiment in a team
+		// TODO when ai and actions are completed, loop this until game over
+		// nested for loop == "for each regiment in each team"
 		for (int i = 0; i < (BoardBuilder.REGIMENTS_PER_TEAM); i++) {
 			
-			// for each team
-			for (UnitLocationList team: teamHolder) {
+//			for (UnitLocationList myTeam: teamHolder) {
+			for (int h = 0; h<2; h++) {
+				
+				UnitLocationList myTeam = teamHolder.get(h);
+				UnitLocationList enemyTeam = new UnitLocationList(99);
+				if (myTeam == team0) {
+					enemyTeam = team1;
+				} else if (myTeam == team1) {
+					enemyTeam = team0;
+				}  // end if statement
 			
-				Regiment regiment = team.getRegimentByIndex(i);
+				Regiment regiment = myTeam.getRegimentByIndex(i);
 				
 				if (!(regiment.checkOpenDirections().size() == 0)) {
 					
 					regiment.logPossibleDirectionCheck();
 					
-					regiment.weighPossibleMoves(team);
+					regiment.weighPossibleMoves(myTeam,enemyTeam);
 										
 				}  // end if statement
 				

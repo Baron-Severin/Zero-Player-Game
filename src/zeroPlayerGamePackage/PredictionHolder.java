@@ -181,22 +181,22 @@ public class PredictionHolder {
 	}  // end populateSurroundingPerimeters
 	
 	// sets up / calls: areFlanksOpen, 
-	public void loopOverSurroundingPerimeters(UnitLocationList team) {
+	public void loopOverSurroundingPerimeters(UnitLocationList myTeam, UnitLocationList enemyTeam) {
 		
-		HashMap<Integer, PositionObject> allyTeam;
-		HashMap<Integer, PositionObject> enemyTeam;
+		HashMap<Integer, PositionObject> allyTeamHashMap;
+		HashMap<Integer, PositionObject> enemyTeamHashMap;
 		
 		if (regiment.getTeam() == 0) {
-			allyTeam = UnitLocationList.team0RegimentLocations;
-			enemyTeam = UnitLocationList.team1RegimentLocations;
+			allyTeamHashMap = UnitLocationList.team0RegimentLocations;
+			enemyTeamHashMap = UnitLocationList.team1RegimentLocations;
 		} else if (regiment.getTeam() == 1) {
-			allyTeam = UnitLocationList.team1RegimentLocations;
-			enemyTeam = UnitLocationList.team0RegimentLocations;
+			allyTeamHashMap = UnitLocationList.team1RegimentLocations;
+			enemyTeamHashMap = UnitLocationList.team0RegimentLocations;
 		} else {
 			// two below HashMaps created only so that the variables are instantiated.  One of the
 			// above conditions should pass, or something is seriously wrong
-			allyTeam = new HashMap<Integer, PositionObject>();
-			enemyTeam = new HashMap<Integer, PositionObject>();
+			allyTeamHashMap = new HashMap<Integer, PositionObject>();
+			enemyTeamHashMap = new HashMap<Integer, PositionObject>();
 			System.out.println("Error: In PredictionHolder.loopOverSurroundingPerimeters(),"
 					+ " regiment.getTeam() returned a team other than 0 or 1");
 			new Exception().printStackTrace();
@@ -206,21 +206,41 @@ public class PredictionHolder {
 			
 			int alliesNearby = 0;
 			int healthyAlliesNearby = 0;
+			int healthyEnemiesNearby = 0;
 			
 			for (PositionValueAndType pvat: surroundingPositionPerimeters.get(i)) {
+				
+				Regiment regiment;
 				
 				if (pvat.getType() == "ally") {
 					
 					alliesNearby += 1;
 					
-					Regiment regiment = team.getRegimentByPosition(pvat.getPosition());
+					regiment = myTeam.getRegimentByPosition(pvat.getPosition());
 					// if unit is not critical or low health or morale
 					if (!(regiment.getFuzzyHealth().equals("critical")
 							|| regiment.getFuzzyHealth().equals("low")
 							|| regiment.getFuzzyMorale().equals("critical")
 							|| regiment.getFuzzyMorale().equals("low"))) {
+						
 					healthyAlliesNearby += 1;
-					}
+					
+					}  // end if ally is healthy
+					
+					if (pvat.getType() == "enemy") {
+						
+						regiment = enemyTeam.getRegimentByPosition(pvat.getPosition());
+						// if unit is not critical or low health or morale
+						if (!(regiment.getFuzzyHealth().equals("critical")
+								|| regiment.getFuzzyHealth().equals("low")
+								|| regiment.getFuzzyMorale().equals("critical")
+								|| regiment.getFuzzyMorale().equals("low"))) {
+						
+							healthyEnemiesNearby += 1;
+							
+						}  // end if enemy is healthy
+
+					}  // end if regiment is enemy
 					
 				}  // end if type == ally
 				
@@ -235,6 +255,11 @@ public class PredictionHolder {
 			
 			healthyAlliesNearbyScore *= this.regiment.getDefensiveModifier();
 			surroundingPositions.get(i).addValue(healthyAlliesNearbyScore);
+			
+			double healthyEnemiesNearbyScore = areHealthyEnemiesNearby(healthyEnemiesNearby);
+			
+			healthyEnemiesNearbyScore *= this.regiment.getDefensiveModifier();
+			surroundingPositions.get(i).addValue(healthyEnemiesNearbyScore);
 			
 		}  // end for i in surroundingPerimeters
 	
@@ -257,7 +282,21 @@ public class PredictionHolder {
 			return 3;
 		} else {
 			return 5;
+		}  // end if statement
+	}  // end areHealthyAlliesNearby
+	
+	public double areHealthyEnemiesNearby(int healthyEnemiesNearby) {
+		if (healthyEnemiesNearby < 1) {
+			return 1;
+		} else if (healthyEnemiesNearby < 2) {
+			return -.5;
+		} else if (healthyEnemiesNearby < 3) {
+			return -1;
+		} else if (healthyEnemiesNearby < 6) {
+			return -4;
+		} else {
+			return -7;
 		}
-	}
+	}  // end areHealthyEnemiesNearby
 	
 }  // end PredictionHolder
