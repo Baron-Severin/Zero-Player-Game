@@ -109,7 +109,7 @@ public class RegimentAi extends HasGridPosition {
 	
 	public void weighDefensive() {
 		
-		predictionHolder.areFlanksOpen();
+		predictionHolder.loopOverSurroundingPerimeters();
 		// areAlliesNearby()  // and are they strong
 		// canTheyKillMe
 		

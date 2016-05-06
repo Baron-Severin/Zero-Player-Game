@@ -10,14 +10,14 @@ public class PositionValueAndType {
 	}  // end constructor
 	
 	private PositionObject position;
-	private int value;
+	private double value;
 	private String type;
 	
 	public PositionObject getPosition() {
 		return position;
 	}  // end getPosition
 	
-	public int getValue() {
+	public double getValue() {
 		return value;
 	}  // end getValue
 	
@@ -28,6 +28,10 @@ public class PositionValueAndType {
 	public void setValue(int value) {
 		this.value = value;
 	}  // end setValue
+	
+	public void addValue(Double value) {
+		this.value += value;
+	}  // end addValue
 	
 	public void printAll() {
 		System.out.println(position.getPositionString() + ", " + value + ", " + type);

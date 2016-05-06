@@ -1,6 +1,7 @@
 package zeroPlayerGamePackage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import zeroPlayerGamePackage.ReturnObjects.PositionObject;
 import zeroPlayerGamePackage.ReturnObjects.PositionValueAndType;
@@ -37,7 +38,7 @@ public class PredictionHolder {
 //	private ArrayList<PositionValueAndType> W = new ArrayList<PositionValueAndType>();
 //	private ArrayList<PositionValueAndType> NW = new ArrayList<PositionValueAndType>();
 	
-	private ArrayList<PositionValueAndType> surroundingPositions = new ArrayList<PositionValueAndType>();
+	public ArrayList<PositionValueAndType> surroundingPositions = new ArrayList<PositionValueAndType>();
 	
 	
 	// This populates each position next to the Regiment, and each next to that.
@@ -179,11 +180,32 @@ public class PredictionHolder {
 		
 	}  // end populateSurroundingPerimeters
 	
-	public void areFlanksOpen() {
+	// sets up / calls: areFlanksOpen, 
+	public void loopOverSurroundingPerimeters() {
+		
+		HashMap<Integer, PositionObject> allyTeam;
+		HashMap<Integer, PositionObject> enemyTeam;
+		
+		if (regiment.getTeam() == 0) {
+			allyTeam = UnitLocationList.team0RegimentLocations;
+			enemyTeam = UnitLocationList.team1RegimentLocations;
+		} else if (regiment.getTeam() == 1) {
+			allyTeam = UnitLocationList.team1RegimentLocations;
+			enemyTeam = UnitLocationList.team0RegimentLocations;
+		} else {
+			// two below HashMaps created only so that the variables are instantiated.  One of the
+			// above conditions should pass, or something is seriously wrong
+			allyTeam = new HashMap<Integer, PositionObject>();
+			enemyTeam = new HashMap<Integer, PositionObject>();
+			System.out.println("Error: In PredictionHolder.loopOverSurroundingPerimeters(),"
+					+ " regiment.getTeam() returned a team other than 0 or 1");
+			new Exception().printStackTrace();
+		}  // end if statement
 		
 		for (int i = 0; i < surroundingPositionPerimeters.size(); i++) {
 			
 			int alliesNearby = 0;
+			int healthyAlliesNearby = 0;
 			
 			for (PositionValueAndType pvat: surroundingPositionPerimeters.get(i)) {
 				
@@ -191,16 +213,33 @@ public class PredictionHolder {
 					
 					alliesNearby += 1;
 					
+//					if (allyTeam.containsValue(pvat.getPosition()) && ) {
+//					TODO left off here.  checking for healthy allies	
+//					}
+					
 				}  // end if type == ally
 				
 			}  // end for pvat in i
 			
-			// debugging code
-//			System.out.print("There are " + alliesNearby + " allies near ");
-//			System.out.println(surroundingPositions.get(i).getPosition().getPositionString());
+			double openFlanksScore = areFlanksOpen(alliesNearby);
+			
+			openFlanksScore *= this.regiment.getDefensiveModifier();
+			surroundingPositions.get(i).addValue(openFlanksScore);
 			
 		}  // end for i in surroundingPerimeters
 	
+	}  // end loopOverSurroundingPerimeters
+	
+	public double areFlanksOpen(double alliesNearby) {
+		if (alliesNearby < 2) {
+			return -4;
+		} else {
+			return 0;
+		}  // end if statement
 	}  // end areFlanksOpen
+	
+	public void areHealthyAlliesNearby() {
+		
+	}
 	
 }  // end PredictionHolder

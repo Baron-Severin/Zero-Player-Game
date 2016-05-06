@@ -41,7 +41,7 @@ public class GameManager {
 				team0.getRegimentPositions(), team1.getRegimentPositions());
 // end temporary graphics
 		
-//		Thread.sleep(1000);
+		Thread.sleep(1000);
 		
 		while (Regiment.regimentCounter < (BoardBuilder.REGIMENTS_PER_TEAM * 2)) {
 			
@@ -87,7 +87,7 @@ public class GameManager {
 					team0.getRegimentPositions(), team1.getRegimentPositions());
 // end temporary graphics
 			
-//			Thread.sleep(100);
+			Thread.sleep(150);
 			
 		}  // end while loop
 		
@@ -108,7 +108,7 @@ public class GameManager {
 					regiment.weighPossibleMoves();
 					
 				}  // end if statement
-			
+				
 			}  // end for team in teamHolder
 			
 		}  // end for loop (BoardBuilder.REGIMENTS_PER_TEAM)
