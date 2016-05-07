@@ -28,6 +28,8 @@ public class PredictionHolder {
 	// Used for weighing possible moves
 	public void populateSurroundings() {
 		
+		surroundingPositions.clear();
+		
     	ArrayList<PositionObject> positions = surroundingsToPositions(regiment.getPositionObject());
 		
     	// check what, if anything, is occupying those surrounding positions
@@ -250,16 +252,18 @@ public class PredictionHolder {
 			healthyEnemiesNearbyScore *= this.regiment.getDefensiveModifier();
 			surroundingPositions.get(i).addValue(healthyEnemiesNearbyScore);
 			
+// TODO generateTowardsEnemyObjectivesScore is currently causing every unit to move NW every time.
+// Culprit could be one of a few methods, and could impact generateTowardsAlliedObjectives as well.
 			PositionObject currentLocation = this.regiment.getPositionObject();
-			PositionObject destination = surroundingPositions.get(i).getPosition();
+			PositionObject checking = surroundingPositions.get(i).getPosition();
 			double towardsEnemyObjectivesScore = generateTowardsEnemyObjectivesScore(currentLocation, 
-					destination, myTeam, enemyTeam);
+					checking, myTeam, enemyTeam);
 			
 			// morale weighting done within generateTowardsEnemyObjectivesScore
 			surroundingPositions.get(i).addValue(towardsEnemyObjectivesScore);
 			
 			double towardsAlliedObjectivesScore = generateTowardsAlliedObjectivesScore(currentLocation, 
-					destination, myTeam, enemyTeam);
+					checking, myTeam, enemyTeam);
 			
 			// morale weighting done within generateTowardsAlliedObjectivesScore
 			surroundingPositions.get(i).addValue(towardsAlliedObjectivesScore);
@@ -268,19 +272,23 @@ public class PredictionHolder {
 			
 			randomizedValue = randomizeMyValue(randomizedValue);
 			surroundingPositions.get(i).setValue(randomizedValue);
-			
-//          TODO Uncomment this code to view example position values
-//			     Note that all units start at high morale, and so want to move
-//			     towards objectives
-//			   //  BEGIN TEST CODE
-//			System.out.println("Regiment #" + this.regiment.id + ":");
-//			for (int testCode = 0; testCode < surroundingPositions.size(); testCode++) {
-//				System.out.print("Position " + surroundingPositions.get(testCode).getPosition().getPositionString());
-//				System.out.println(" Value: " + surroundingPositions.get(testCode).getValue());
-//			}  // END TEST CODE
-//
-			
+						
 		}  // end for i in surroundingPositionPerimeters
+		
+//      TODO Uncomment this code to view example position values
+//		     Note that all units start at high morale, and so want to move
+//		     towards objectives.
+//		     Also note that 0 values are replaced by -9999 by a later method
+//		   //  BEGIN TEST CODE
+//		
+//		System.out.print("Regiment #" + this.regiment.id + ", Position: "); 
+//		System.out.println(this.regiment.getPositionObject().getPositionString());
+//		for (int testCode = 0; testCode < surroundingPositions.size(); testCode++) {
+//			System.out.print("Position " + surroundingPositions.get(testCode).getPosition().getPositionString());
+//			System.out.println(" Value: " + surroundingPositions.get(testCode).getValue());
+//		}  
+//		
+//		   // END TEST CODE
 	
 	}  // end loopOverSurroundingPerimeters
 	
@@ -321,9 +329,9 @@ public class PredictionHolder {
 	}  // end areHealthyEnemiesNearby
 	
 	private double generateTowardsEnemyObjectivesScore(PositionObject currentLocation, 
-			PositionObject destination, UnitLocationList myTeam, UnitLocationList enemyTeam) {
+			PositionObject checking, UnitLocationList myTeam, UnitLocationList enemyTeam) {
 		
-		boolean towardsObjectives = isThisTowardsObjectives(currentLocation, destination, 
+		boolean towardsObjectives = isThisTowardsObjectives(currentLocation, checking, 
 				enemyTeam);
 		
 		Regiment regiment = this.regiment;
@@ -351,9 +359,9 @@ public class PredictionHolder {
 	}  // end generateTowardsEnemyObjectivesScore
 	
 	private double generateTowardsAlliedObjectivesScore(PositionObject currentLocation, 
-			PositionObject destination, UnitLocationList myTeam, UnitLocationList enemyTeam) {
+			PositionObject checking, UnitLocationList myTeam, UnitLocationList enemyTeam) {
 		
-		boolean towardsObjectives = isThisTowardsObjectives(currentLocation, destination, 
+		boolean towardsObjectives = isThisTowardsObjectives(currentLocation, checking, 
 				myTeam);
 		
 		Regiment regiment = this.regiment;
@@ -378,26 +386,28 @@ public class PredictionHolder {
 		
 	}  // end generateTowardsEnemyObjectivesScore
 	
+	
+	// TODO fix this
 	private boolean isThisTowardsObjectives(PositionObject currentLocation, 
-			PositionObject destination, UnitLocationList destinationBases) {
+			PositionObject checking, UnitLocationList destinationBases) {
 		
-		ArrayList<PositionObject> destinations = destinationBases.getBasePositions();
+		ArrayList<PositionObject> targetBases = destinationBases.getBasePositions();
 		
-		int xMove = (destination.getPositionX()) - (currentLocation.getPositionX());
-		int yMove = (destination.getPositionY()) - (currentLocation.getPositionY());
+		int xMove = (checking.getPositionX()) - (checking.getPositionX());
+		int yMove = (checking.getPositionY()) - (checking.getPositionY());
 		
 		ArrayList<Integer> distanceToBases = new ArrayList<Integer>();
 		int currentShortestDistance = 999999;
 		PositionObject currentDestination = new PositionObject(9999, 9999);
 		
-		for (int i = 0; i < destinations.size(); i++) {
+		for (int i = 0; i < targetBases.size(); i++) {
 			
-			int distanceX = Math.abs((destinations.get(i).getPositionX() - currentLocation.getPositionX()));
-			int distanceY = Math.abs((destinations.get(i).getPositionY() - currentLocation.getPositionY()));
+			int distanceX = Math.abs((targetBases.get(i).getPositionX() - checking.getPositionX()));
+			int distanceY = Math.abs((targetBases.get(i).getPositionY() - checking.getPositionY()));
 			
 			if (distanceX <= currentShortestDistance && distanceY <= currentShortestDistance) {
 				
-				currentDestination = destinations.get(i).getPositionObject();
+				currentDestination = targetBases.get(i).getPositionObject();
 				
 				if (distanceX > distanceY) {
 					currentShortestDistance = distanceX;
@@ -409,8 +419,8 @@ public class PredictionHolder {
 			
 		}  // end for loop (enemyBases.size)
 		
-		int correctX = currentDestination.getPositionX() - currentLocation.getPositionX();
-		int correctY = currentDestination.getPositionY() - currentLocation.getPositionY();
+		int correctX = currentDestination.getPositionX() - checking.getPositionX();
+		int correctY = currentDestination.getPositionY() - checking.getPositionY();
 		
 		boolean goodX = false;
 		boolean goodY = false;
@@ -499,6 +509,48 @@ public class PredictionHolder {
 		value = value * random;
 		
 		return value;
-	}
+		
+	}  // end randomizeMyValue
+	
+	public void sortPossibleMoves() {
+		
+		for (int i = 0; i < surroundingPositions.size(); i++) {
+			
+			if (surroundingPositions.get(i).getType().equals("ally")
+					|| surroundingPositions.get(i).getType().equals("blocked")) {
+				surroundingPositions.get(i).setValue(-9999);
+			}
+			
+		}  // end for loop (surroundingPositions.size)
+		
+	}  // end sortPossibleMoves
+	
+	public PositionObject selectBestMove() {
+		
+		double bestMoveValue = -9999;
+		int bestMoveIndex = -9999;
+		
+		for (int i = 0; i < surroundingPositions.size(); i++) {
+			
+			if (surroundingPositions.get(i).getValue() > bestMoveValue) {
+				bestMoveValue = surroundingPositions.get(i).getValue();
+				bestMoveIndex = i;
+			}  // end if better than current bestMove
+			
+		}  // end for loop (surroundingPositions.size)
+		PositionObject bestMovePosition = new PositionObject(9999, 9999);
+		
+		// If no good moves are possible, this try block will return an invalid index (-9999).  In
+		// that case the Regiment should sit still and wait for the next turn
+		try {
+		bestMovePosition = surroundingPositions.get(bestMoveIndex).getPosition();
+		} catch (java.lang.ArrayIndexOutOfBoundsException exception) {
+			bestMovePosition = this.regiment.getPositionObject();
+		}
+		
+		return bestMovePosition;
+		
+	}  // end selectBestMove
+	
 	
 }  // end PredictionHolder

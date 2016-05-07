@@ -43,7 +43,7 @@ public class UnitLocationList {
 		}  // end for loop (regimentPositions.size)
 			
 		System.out.println("Team" + this.team + "UnitLocationList.getRegimentByPosition found"
-				+ " no regiment at that position");
+				+ " no regiment at position " + position.getPositionString());
 		new Exception().printStackTrace();
 		
 		// returns nonsense Regiment
@@ -92,6 +92,8 @@ public class UnitLocationList {
 				} else if (regiment.getTeam() == 1) {
 					team1RegimentLocations.put(regiment.getNumber(), position);
 				}  // end if statement
+				
+				regiment.setPositionWithPositionObject(position);
 				
 				break;
 			}  // end if statement
@@ -199,6 +201,24 @@ public class UnitLocationList {
     }  // end if statement
 			
 	}  // end isPositionOccupiedByTeam
+	
+	public boolean isPositionOccupiedByUs(PositionObject position) {
+		
+		boolean bool = false;
+		
+		if (this.team == 0){
+			bool = UnitLocationList.isPositionOccupiedByTeam(position, 0);
+		} else if (this.team == 1) {
+			bool = UnitLocationList.isPositionOccupiedByTeam(position, 1);
+		} else {
+			System.out.println("UnitLocationList.isPositionOccupiedByUs was passed an int for "
+					+ "this.team that was neither 0 nor 1.  Integer passed: " + this.team);
+			new Exception().printStackTrace();
+		}  // end if team == X
+		
+		return bool;
+		
+	}  // end isPositionOccupiedByUs
 	
 	public void addBase(PositionObject position) {
 		

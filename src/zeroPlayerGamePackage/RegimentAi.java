@@ -12,6 +12,7 @@ public class RegimentAi extends HasGridPosition {
 	protected int health;
 	protected int id;
 	protected int team;
+	protected int enemyTeam;
 	protected String personality; // reserved
 	protected ArrayList<PositionValueAndType> possibleMoves;
 	protected PredictionHolder predictionHolder;
@@ -110,13 +111,19 @@ public class RegimentAi extends HasGridPosition {
 		
 	}  // end logPossibleDirectionCheck
 	
-	public void weighPossibleMoves(UnitLocationList myTeam, UnitLocationList enemyTeam) {
+	public PositionObject weighPossibleMoves(UnitLocationList myTeam, UnitLocationList enemyTeam) {
 		
 		aggressiveModifier = weighMorale().get(0);
 		defensiveModifier = weighMorale().get(1);
 		
 		// this method weighs all of the various ai factors
 		predictionHolder.loopOverSurroundingPerimeters(myTeam, enemyTeam);
+		
+		predictionHolder.sortPossibleMoves();
+		
+		PositionObject bestMove = predictionHolder.selectBestMove();
+		
+		return bestMove;
 		
 	}  // end weighPossibleMoves()
 	

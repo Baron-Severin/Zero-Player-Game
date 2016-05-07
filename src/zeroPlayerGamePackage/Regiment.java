@@ -19,6 +19,12 @@ public class Regiment extends RegimentAi {
 		this.setPositionX(position.getPositionX());
 		this.setPositionY(position.getPositionY());
 		regimentCounter++;
+		
+		if (this.team == 0) {
+			this.enemyTeam = 1;
+		} else {
+			this.enemyTeam = 0;
+		}  // end if statement (sets enemyTeam)
 	};
 	
 	public int getNumber() {

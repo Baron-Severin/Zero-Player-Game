@@ -14,6 +14,13 @@ public class GameManager {
 
 	public static void main(String[] args) throws InterruptedException {
 		
+		/* Begin Debugging Options */
+		boolean sleep = true;
+		
+		/* End Debugging Options */
+		
+		boolean gameOver = false;
+		
         SetUpGame setup = new SetUpGame();
         
 		UnitLocationList team0 = new UnitLocationList(0);
@@ -41,7 +48,9 @@ public class GameManager {
 				team0.getRegimentPositions(), team1.getRegimentPositions());
 // end temporary graphics
 		
-//		Thread.sleep(1000);
+		if (sleep == true) {
+		    Thread.sleep(1000);
+		}  // if sleep == true
 		
 		while (Regiment.regimentCounter < (BoardBuilder.REGIMENTS_PER_TEAM * 2)) {
 			
@@ -87,14 +96,23 @@ public class GameManager {
 					team0.getRegimentPositions(), team1.getRegimentPositions());
 // end temporary graphics
 			
-//			Thread.sleep(150);
-			
+			if (sleep == true){
+			    Thread.sleep(150);
+			}  // end if sleep == true
+			    
 		}  // end while loop
+		
+		if (sleep == true){
+		    Thread.sleep(2000);
+		}  // end if sleep == true
 		
 		
 		// this is where runGame() from the readme begins
 		// TODO when ai and actions are completed, loop this until game over
 		// nested for loop == "for each regiment in each team"
+		
+		while (gameOver == false) {
+		
 		for (int i = 0; i < (BoardBuilder.REGIMENTS_PER_TEAM); i++) {
 			
 //			for (UnitLocationList myTeam: teamHolder) {
@@ -114,13 +132,36 @@ public class GameManager {
 					
 					regiment.logPossibleDirectionCheck();
 					
-					regiment.weighPossibleMoves(myTeam,enemyTeam);
+					PositionObject bestMove = regiment.weighPossibleMoves(myTeam, enemyTeam);
+					
+					if (!(enemyTeam.isPositionOccupiedByUs(bestMove))) {
+					    myTeam.moveUnit(regiment, bestMove);
+					}  // end if position is not occupied by enemy
+					
+//					if (enemyTeam.isPositionOccupiedByUs(bestMove)) {
+//					    myTeam.attackPosition(regiment, bestMove);  // TODO this method is
+//					}  // end if position is occupied by enemy      // currently unwritten
+					
+					console.draw(team0.getBasePositions(), team1.getBasePositions(), 
+							team0.getRegimentPositions(), team1.getRegimentPositions());
+					
+					if (sleep == true){
+					    Thread.sleep(150);
+					}  // end if sleep == true
 										
 				}  // end if statement
+				
+//				if (isGameOver() == false) {
+//					
+//				} else {
+//					gameOver = true;
+//				}
 				
 			}  // end for team in teamHolder
 			
 		}  // end for loop (BoardBuilder.REGIMENTS_PER_TEAM)
+		
+		} // end while gameOver == false
 		
 		
 		
