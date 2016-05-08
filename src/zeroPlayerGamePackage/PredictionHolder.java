@@ -335,7 +335,8 @@ public class PredictionHolder {
 		Regiment regiment = this.regiment;
 		
 		if (GameManager.printGenerateTowardsObjectivesScore) {
-	    	System.out.print("Morale = " + regiment.getFuzzyMorale());
+			System.out.println("------");
+	    	System.out.print("Morale = " + regiment.getFuzzyMorale() + ", ");
 	    	System.out.println("TowardsObjectives = " + towardsObjectives);
 		}  // end printGenerateTowardsObjectivesScore
 		
@@ -402,12 +403,22 @@ public class PredictionHolder {
 		
 		for (int i = 0; i < targetBases.size(); i++) {
 			
+			if (GameManager.printTowardsObjectivesComponents) {
+				System.out.print("TargetBase" + i + ".X: " + targetBases.get(i).getPositionX() + ", ");
+				System.out.println("TargetBase" + i + ".Y: " + targetBases.get(i).getPositionY());
+			}  // end debugging print
+			
 			int distanceX = Math.abs((targetBases.get(i).getPositionX() - checking.getPositionX()));
 			int distanceY = Math.abs((targetBases.get(i).getPositionY() - checking.getPositionY()));
 			
 			if (distanceX <= currentShortestDistance && distanceY <= currentShortestDistance) {
 				
-				closestBase = targetBases.get(i).getPositionObject();
+				closestBase = targetBases.get(i);
+				
+				if (GameManager.printTowardsObjectivesComponents) {
+					System.out.print("SelectedBase" + ".X: " + closestBase.getPositionX() +", ");
+					System.out.println("SelectedBase" + ".Y: " + closestBase.getPositionY());
+				}  // end debugging print
 				
 				if (distanceX > distanceY) {
 					currentShortestDistance = distanceX;
@@ -423,15 +434,22 @@ public class PredictionHolder {
 		int yMove = (checking.getPositionY()) - (currentLocation.getPositionY());
 		
 		if (GameManager.printTowardsObjectivesComponents) {
+//			System.out.println("------");
+			System.out.print("CurrentLocation.X: " + currentLocation.getPositionX() + ", ");
+			System.out.println("CurrentLocation.Y: " + currentLocation.getPositionY() + " ");
+			System.out.print("Checking.X: " + checking.getPositionX() + ", ");
+			System.out.println("Checking.Y: " + checking.getPositionY() + " ");
 			System.out.println("xMove: " + xMove + ", yMove:" + yMove + " ");
-		}
+		}  // end debugging print
 		
 		int correctX = closestBase.getPositionX() - currentLocation.getPositionX();
 		int correctY = closestBase.getPositionY() - currentLocation.getPositionY();
 		
 		if (GameManager.printTowardsObjectivesComponents) {
+			System.out.print("ClosestBase.X: " + closestBase.getPositionX() + " ");
+			System.out.println("ClosestBase.Y: " + closestBase.getPositionY() + " ");
 			System.out.println("correctX: " + correctX + ", CorrectY: " + correctY + " ");
-		}
+		}  // end debugging print
 		
 		boolean goodX = false;
 		boolean goodY = false;

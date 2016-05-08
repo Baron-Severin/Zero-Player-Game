@@ -14,15 +14,18 @@ import zeroPlayerGamePackage.ReturnObjects.PositionValueAndType;
 
 public class GameManager {
 	
-	/* Begin Debugging Options */
+	/* Begin Visual / Debug Options */
+	// true to play normally
 	public static final boolean sleep = true;
 	public static final boolean animateInConsole = true;
+	public static final long turnSpeed = 10;  // default == 10
 	
+	// false to play normally
 	public static final boolean printPositionValues = false;
 	public static final boolean oneTurnAtATime = false;
 	public static final boolean printGenerateTowardsObjectivesScore = false;
 	public static final boolean printTowardsObjectivesComponents = false;
-	/* End Debugging Options */
+	/* End Visual / Debug Options */
 
 	public static void main(String[] args) throws InterruptedException {
 		
@@ -56,7 +59,7 @@ public class GameManager {
 // end temporary graphics
 		
 		if (sleep == true) {
-		    Thread.sleep(1000);
+		    Thread.sleep(Math.round((double) (1000 * turnSpeed)/10));
 		}  // if sleep == true
 		
 		while (Regiment.regimentCounter < (BoardBuilder.REGIMENTS_PER_TEAM * 2)) {
@@ -104,13 +107,13 @@ public class GameManager {
 // end temporary graphics
 			
 			if (sleep == true){
-			    Thread.sleep(150);
+			    Thread.sleep(Math.round((double) (150 * turnSpeed)/10));
 			}  // end if sleep == true
 			    
 		}  // end while loop
 		
 		if (sleep == true){
-		    Thread.sleep(2000);
+		    Thread.sleep(Math.round((double) (2000 * turnSpeed)/10));
 		}  // end if sleep == true
 		
 		
@@ -153,7 +156,7 @@ public class GameManager {
 							team0.getRegimentPositions(), team1.getRegimentPositions());
 					
 					if (sleep == true){
-					    Thread.sleep(150);
+					    Thread.sleep(Math.round((double) (150 * turnSpeed)/10));
 					}  // end if sleep == true
 										
 				}  // end if statement
@@ -181,7 +184,9 @@ public class GameManager {
 	public static void waitForEnter() {
 	    System.out.println("Press Enter to continue");
 	    try { System.in.read(); }
-	    catch (Exception e) {};
+	    catch (Exception e) {
+	    	// this method only exists to force a wait between turns
+	    };
 	}  // end waitForEnter
 			
 }  // end GameManager
