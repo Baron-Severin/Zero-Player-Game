@@ -1,6 +1,8 @@
 package zeroPlayerGamePackage.GameManagement;
 
+import java.io.Console;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import zeroPlayerGamePackage.BoardBuilder;
 import zeroPlayerGamePackage.PredictionHolder;
@@ -11,13 +13,18 @@ import zeroPlayerGamePackage.ReturnObjects.PositionObject;
 import zeroPlayerGamePackage.ReturnObjects.PositionValueAndType;
 
 public class GameManager {
+	
+	/* Begin Debugging Options */
+	public static final boolean sleep = true;
+	public static final boolean animateInConsole = true;
+	
+	public static final boolean printPositionValues = false;
+	public static final boolean oneTurnAtATime = false;
+	public static final boolean printGenerateTowardsObjectivesScore = false;
+	public static final boolean printTowardsObjectivesComponents = false;
+	/* End Debugging Options */
 
 	public static void main(String[] args) throws InterruptedException {
-		
-		/* Begin Debugging Options */
-		boolean sleep = true;
-		
-		/* End Debugging Options */
 		
 		boolean gameOver = false;
 		
@@ -161,87 +168,20 @@ public class GameManager {
 			
 		}  // end for loop (BoardBuilder.REGIMENTS_PER_TEAM)
 		
+		if (oneTurnAtATime) {
+			
+			waitForEnter();
+			
+		}  // end if ifOneTurnAtATime == true
+		
 		} // end while gameOver == false
 		
-		
-		
-		
-		
-		// START TEST CODE
-		// much of this no longer applies, but some of it saves a bit of time when debugging
-////		
-//		ArrayList<PredictionHolder> predicters = new ArrayList<PredictionHolder>();
-//		for (Regiment i: team0.getRegimentList()) {
-//			
-//			PredictionHolder tempPredicter = new PredictionHolder(i);
-//			predicters.add(tempPredicter);
-//			tempPredicter.populateSurroundings();
-//		    tempPredicter.populateSurroundingPerimeters();
-//		    
-//		    System.out.println(i.getPredictionHolder().surroundingPositionPerimeters.get(0).get(0).getValue());
-//		}  // end for in loop
-//		
-//		
-//		
-//		for (int i = 0; i < 3; i++) {
-//			System.out.println(team0.getBasePositions().get(i).getPositionString());
-//			System.out.println(team1.getBasePositions().get(i).getPositionString());
-//		}
-//		PositionObject position = new PositionObject(5, 5);
-//		Regiment tester0 = new Regiment(0, position);
-//		team0.addUnit(tester0);
-//		PositionObject checkin = new PositionObject(5, 5);
-//		System.out.println(UnitLocationList.isPositionOccupiedByTeam(checkin, 0));
-//		System.out.println(UnitLocationList.isPositionOccupiedByTeam(checkin, 1));
-//		PredictionHolder pred = new PredictionHolder(tester0);
-//		pred.populateDirectionHolder();
-//		ArrayList<String> array = tester0.checkOpenDirections();
-//		System.out.println(tester0.directionToPositionObject(array));
-//		PositionObject position = new PositionObject(0, 0);
-//		BoardBuilder.addToOccupiedSquares(position);
-//		
-//		Regiment tester1 = new Regiment(1);
-//		tester1.setPositionX(1);
-//		tester1.setPositionY(0);
-//		PositionObject position1 = new PositionObject(1, 0);
-//		BoardBuilder.addToOccupiedSquares(position1);
-//		PositionObject tempPosition = new PositionObject(1, 0);
-//		BoardBuilder.team1RegimentLocations.put("hi", tempPosition);
-//		
-//		System.out.println(tester0.checkOpenDirections());
-//		tester0.regimentCheckEnemyLocations();
-//		
-//		
-//		UnitLocationList team0 = new UnitLocationList();
-//		UnitLocationList team1 = new UnitLocationList();
-//		Regiment tester0 = new Regiment(0);
-//		Regiment tester1 = new Regiment(1);
-//		
-//		PositionObject position0 = new PositionObject(10, 10);
-//		PositionObject position1 = new PositionObject(11, 10);
-//		
-//		team0.addUnit(tester0, position0);
-//		team1.addUnit(tester1, position1);
-//		
-////		System.out.println(team0.getRegimentList());
-////		System.out.println(team0.getRegimentPositions());
-////		
-////		for (int i = 0; i< team0.getRegimentList().size(); i++) {
-////			System.out.print("Regiment # " + team0.getRegimentList().get(i).getNumber());
-////			System.out.println(", Position " + team0.getRegimentPositions().get(i).getPositionString());
-////		}
-//		
-//		System.out.println(team1.whereIsUnit(1).getPositionString());
-//		System.out.println(team0.whereIsUnit(tester0).getPositionString());
-//		
-//		team0.removeUnit(position0);
-//		
-//		System.out.println(team0.isPositionOccupiedByTeam(10, 10));
-//		System.out.println(team1.isPositionOccupiedByTeam(11, 10));
-//		
-		
-		// END TEST CODE
-
 	}  // end main
+	
+	public static void waitForEnter() {
+	    System.out.println("Press Enter to continue");
+	    try { System.in.read(); }
+	    catch (Exception e) {};
+	}  // end waitForEnter
 			
 }  // end GameManager

@@ -3,6 +3,7 @@ package zeroPlayerGamePackage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import zeroPlayerGamePackage.GameManagement.GameManager;
 import zeroPlayerGamePackage.ReturnObjects.PositionObject;
 import zeroPlayerGamePackage.ReturnObjects.PositionValueAndType;
 
@@ -110,6 +111,8 @@ public class PredictionHolder {
 	// populates surroundingPerimeters and tests for type. Returns a PositionObject, 0, 
 	// Type pvat
 	public void populateSurroundingPerimeters() {
+		
+		surroundingPositionPerimeters.clear();
 		
 		for (int i = 0; i < surroundingPositions.size(); i++) {
 			
@@ -275,20 +278,15 @@ public class PredictionHolder {
 						
 		}  // end for i in surroundingPositionPerimeters
 		
-//      TODO Uncomment this code to view example position values
-//		     Note that all units start at high morale, and so want to move
-//		     towards objectives.
-//		     Also note that 0 values are replaced by -9999 by a later method
-//		   //  BEGIN TEST CODE
-//		
-//		System.out.print("Regiment #" + this.regiment.id + ", Position: "); 
-//		System.out.println(this.regiment.getPositionObject().getPositionString());
-//		for (int testCode = 0; testCode < surroundingPositions.size(); testCode++) {
-//			System.out.print("Position " + surroundingPositions.get(testCode).getPosition().getPositionString());
-//			System.out.println(" Value: " + surroundingPositions.get(testCode).getValue());
-//		}  
-//		
-//		   // END TEST CODE
+        if (GameManager.printPositionValues) {
+			System.out.print("Regiment #" + this.regiment.id + ", Position: "); 
+			System.out.println(this.regiment.getPositionObject().getPositionString());
+			for (int testCode = 0; testCode < surroundingPositions.size(); testCode++) {
+				System.out.print("Position " + surroundingPositions.get(testCode).getPosition().getPositionString());
+				System.out.println(" Value: " + surroundingPositions.get(testCode).getValue());
+			}  // end for (surroundingPostions.size)
+        }  // end if printPositionValues == true
+
 	
 	}  // end loopOverSurroundingPerimeters
 	
@@ -336,8 +334,13 @@ public class PredictionHolder {
 		
 		Regiment regiment = this.regiment;
 		
+		if (GameManager.printGenerateTowardsObjectivesScore) {
+	    	System.out.print("Morale = " + regiment.getFuzzyMorale());
+	    	System.out.println("TowardsObjectives = " + towardsObjectives);
+		}  // end printGenerateTowardsObjectivesScore
+		
 		if (regiment.getFuzzyMorale().equals("high") && towardsObjectives == true) {
-			return 8;
+			return 10;
 		} else if (regiment.getFuzzyMorale().equals("high") && towardsObjectives == false) {
 			return -3;
 		} else if (regiment.getFuzzyMorale().equals("medium") && towardsObjectives == true) {
@@ -393,12 +396,9 @@ public class PredictionHolder {
 		
 		ArrayList<PositionObject> targetBases = destinationBases.getBasePositions();
 		
-		int xMove = (checking.getPositionX()) - (checking.getPositionX());
-		int yMove = (checking.getPositionY()) - (checking.getPositionY());
-		
 		ArrayList<Integer> distanceToBases = new ArrayList<Integer>();
 		int currentShortestDistance = 999999;
-		PositionObject currentDestination = new PositionObject(9999, 9999);
+		PositionObject closestBase = new PositionObject(9999, 9999);
 		
 		for (int i = 0; i < targetBases.size(); i++) {
 			
@@ -407,7 +407,7 @@ public class PredictionHolder {
 			
 			if (distanceX <= currentShortestDistance && distanceY <= currentShortestDistance) {
 				
-				currentDestination = targetBases.get(i).getPositionObject();
+				closestBase = targetBases.get(i).getPositionObject();
 				
 				if (distanceX > distanceY) {
 					currentShortestDistance = distanceX;
@@ -417,10 +417,21 @@ public class PredictionHolder {
 				
 			}  // end if this distance is shorter
 			
-		}  // end for loop (enemyBases.size)
+		}  // end for loop (targetBases.size)
 		
-		int correctX = currentDestination.getPositionX() - checking.getPositionX();
-		int correctY = currentDestination.getPositionY() - checking.getPositionY();
+		int xMove = (checking.getPositionX()) - (currentLocation.getPositionX());
+		int yMove = (checking.getPositionY()) - (currentLocation.getPositionY());
+		
+		if (GameManager.printTowardsObjectivesComponents) {
+			System.out.println("xMove: " + xMove + ", yMove:" + yMove + " ");
+		}
+		
+		int correctX = closestBase.getPositionX() - currentLocation.getPositionX();
+		int correctY = closestBase.getPositionY() - currentLocation.getPositionY();
+		
+		if (GameManager.printTowardsObjectivesComponents) {
+			System.out.println("correctX: " + correctX + ", CorrectY: " + correctY + " ");
+		}
 		
 		boolean goodX = false;
 		boolean goodY = false;
