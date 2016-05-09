@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import zeroPlayerGamePackage.BoardBuilder;
+import zeroPlayerGamePackage.UnitLocationList;
 import zeroPlayerGamePackage.GameManagement.GameManager;
 import zeroPlayerGamePackage.ReturnObjects.PositionObject;
 
@@ -43,6 +44,17 @@ public class ConsoleLogger {
 				System.out.println(currentRow);
 				
 			}  // end height for loop
+			
+			if (GameManager.logActiveRegiments) {
+			
+				System.out.println("team0Regiments.size(): " + team0Regiments.size());
+				System.out.println("team1Regiments.size(): " + team1Regiments.size());
+				System.out.println("team0RegimentLocations.size(): " 
+				    + UnitLocationList.team0RegimentLocations.size());
+				System.out.println("team1RegimentLocations.size(): " 
+					    + UnitLocationList.team1RegimentLocations.size());
+				
+			}  // end if GameManager.logActiveRegiments
 			
 		}  // end draw
 		

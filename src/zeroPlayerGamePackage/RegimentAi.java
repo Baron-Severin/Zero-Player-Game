@@ -37,6 +37,53 @@ public class RegimentAi extends HasGridPosition {
 		return this.predictionHolder;
 	}  // end getPredictionHolder
 	
+	public void buildDamage() {
+		
+		int myDamage = (this.health / 3);
+		double myMultiplier = 1;
+		
+		if (this.fuzzyMorale.equals("high")) {
+			myMultiplier = (Math.random() * .75) + 1.25;
+			myDamage *= myMultiplier;
+		} else if (this.fuzzyMorale.equals("medium")) {
+			myMultiplier = (Math.random() * .75) + .75;
+			myDamage *= myMultiplier;
+		} else if (this.fuzzyMorale.equals("low")) {
+			myMultiplier = (Math.random() * .75) + .5;
+			myDamage *= myMultiplier;
+		} else {
+			myMultiplier = (Math.random() * .75) + .25;
+			myDamage *= myMultiplier;
+		}  // end if fuzzyMorale == X
+		
+		this.damage = myDamage;
+		
+	}  // end buildDamage
+	
+	public int getDamage() {
+		return this.damage;
+	}  // end getDamage
+	
+	public void takeDamage(int damage) {
+		this.morale -= damage;
+		this.health -= damage;
+	}  // end takeDamage
+	
+	public boolean isUnitDead() {
+		if (this.health <= 0) {
+			return true;
+		} else {
+			return false;
+		}  // end if health <= 0
+	}  // end isUnitDead
+	
+	public void increaseMorale() {
+		this.morale += 10;
+		if (this.morale > 100) {
+			this.morale = 100;
+		}
+	}  // end increaseMorale
+	
 	public void buildFuzzyMorale() {
 		if (this.morale >= 80) {
 			this.fuzzyMorale = "high";

@@ -82,6 +82,8 @@ public class UnitLocationList {
 	
 	public void moveUnit(Regiment regiment, PositionObject position) {
 		
+		regiment.increaseMorale();
+		
 		for (int i = 0; i < regimentList.size(); i++) {
 			
 			if (regimentList.get(i) == regiment) {
@@ -102,6 +104,26 @@ public class UnitLocationList {
 		
 	}  // end moveUnit
 	
+	public void attackPosition(Regiment attackingUnit, UnitLocationList defendingTeam, 
+			PositionObject defendingPosition) {
+		
+		Regiment defendingUnit = defendingTeam.getRegimentByPosition(defendingPosition);
+		
+		attackingUnit.buildDamage();
+		defendingUnit.buildDamage();
+		
+		attackingUnit.takeDamage(defendingUnit.getDamage());
+		defendingUnit.takeDamage(attackingUnit.getDamage());
+		
+		if (attackingUnit.isUnitDead()) {
+			removeUnit(attackingUnit);
+		}  // end if attacker is dead
+		if (defendingUnit.isUnitDead()) {
+			removeUnit(defendingUnit);
+		}  // end if defender is dead
+		
+	}  // end attackPosition
+	
 	public void removeUnit(Regiment regiment) {
 		
 		if (!regimentList.contains(regiment)) {
@@ -112,18 +134,25 @@ public class UnitLocationList {
 		    
 		}  else {
 			
+			if (this.team == 0) {
+				
+				System.out.println("Team: 0, Position: " 
+				+ regiment.getPositionObject().getPositionString());
+				
+				team0RegimentLocations.remove(regiment.getNumber());
+				
+			} else if (this.team == 1) {
+				
+				System.out.println("Team: 1, Position: " 
+						+ regiment.getPositionObject().getPositionString());
+				
+                team1RegimentLocations.remove(regiment.getNumber());
+			}  // end if statement
+			
 			int index = regimentList.indexOf(regiment);
 			regimentList.remove(regiment);
 			regimentPositions.remove(index);
 			regiment = null;
-			
-			if (this.team == 0) {
-				
-				team0RegimentLocations.remove(regiment);
-				
-			} else if (this.team == 1) {
-                team1RegimentLocations.remove(regiment);
-			}  // end if statement
 			
 		}  // end if statement
 		
@@ -167,8 +196,6 @@ public class UnitLocationList {
 	
 	public static Boolean isPositionOccupiedByTeam (PositionObject position, int team) {
 		
-		Boolean myBool = false;
-		
 		Collection<PositionObject> locationCollection = null;
 		
 		if (team == 0) {
@@ -184,6 +211,8 @@ public class UnitLocationList {
 		
 		ArrayList<PositionObject> occupiedLocations = new ArrayList<PositionObject>();
 		occupiedLocations.addAll(locationCollection);
+		
+		Boolean myBool = false;
 			
 		for (PositionObject i: occupiedLocations) {
 				

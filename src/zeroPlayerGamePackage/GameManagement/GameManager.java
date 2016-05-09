@@ -25,6 +25,7 @@ public class GameManager {
 	public static final boolean oneTurnAtATime = false;
 	public static final boolean printGenerateTowardsObjectivesScore = false;
 	public static final boolean printTowardsObjectivesComponents = false;
+	public static final boolean logActiveRegiments = true;
 	/* End Visual / Debug Options */
 
 	public static void main(String[] args) throws InterruptedException {
@@ -116,66 +117,64 @@ public class GameManager {
 		    Thread.sleep(Math.round((double) (2000 * turnSpeed)/10));
 		}  // end if sleep == true
 		
-		
-		// this is where runGame() from the readme begins
-		// TODO when ai and actions are completed, loop this until game over
-		// nested for loop == "for each regiment in each team"
-		
 		while (gameOver == false) {
 		
-		for (int i = 0; i < (BoardBuilder.REGIMENTS_PER_TEAM); i++) {
-			
-//			for (UnitLocationList myTeam: teamHolder) {
-			for (int h = 0; h<2; h++) {
+			for (int i = 0; i < (BoardBuilder.REGIMENTS_PER_TEAM); i++) {
 				
-				UnitLocationList myTeam = teamHolder.get(h);
-				UnitLocationList enemyTeam = new UnitLocationList(99);
-				if (myTeam == team0) {
-					enemyTeam = team1;
-				} else if (myTeam == team1) {
-					enemyTeam = team0;
-				}  // end if statement
-			
-				Regiment regiment = myTeam.getRegimentByIndex(i);
+				for (int h = 0; h<2; h++) {
+					
+					UnitLocationList myTeam = teamHolder.get(h);
+					UnitLocationList enemyTeam = new UnitLocationList(99);
+					if (myTeam == team0) {
+						enemyTeam = team1;
+					} else if (myTeam == team1) {
+						enemyTeam = team0;
+					}  // end if statement
 				
-				if (!(regiment.checkOpenDirections().size() == 0)) {
+					if (i < myTeam.regimentList.size()) {
+						
+						Regiment regiment = myTeam.getRegimentByIndex(i);
+						
+						if (!(regiment.checkOpenDirections().size() == 0)) {
+							
+							regiment.logPossibleDirectionCheck();
+							
+							PositionObject bestMove = regiment.weighPossibleMoves(myTeam, enemyTeam);
+							
+							if (!(enemyTeam.isPositionOccupiedByUs(bestMove))) {
+							    myTeam.moveUnit(regiment, bestMove);
+							}  // end if position is not occupied by enemy
+							
+							if (enemyTeam.isPositionOccupiedByUs(bestMove)) {
+							    myTeam.attackPosition(regiment, enemyTeam, bestMove);  
+							}  // end if position is occupied by enemy      
+							
+							console.draw(team0.getBasePositions(), team1.getBasePositions(), 
+									team0.getRegimentPositions(), team1.getRegimentPositions());
+							
+							if (sleep == true){
+							    Thread.sleep(Math.round((double) (150 * turnSpeed)/10));
+							}  // end if sleep == true
+												
+						}  // end if statement
+						
+		//				if (isGameOver() == false) {
+		//					
+		//				} else {
+		//					gameOver = true;
+		//				}
+						
+					}  // end for team in teamHolder
 					
-					regiment.logPossibleDirectionCheck();
-					
-					PositionObject bestMove = regiment.weighPossibleMoves(myTeam, enemyTeam);
-					
-					if (!(enemyTeam.isPositionOccupiedByUs(bestMove))) {
-					    myTeam.moveUnit(regiment, bestMove);
-					}  // end if position is not occupied by enemy
-					
-//					if (enemyTeam.isPositionOccupiedByUs(bestMove)) {
-//					    myTeam.attackPosition(regiment, bestMove);  // TODO this method is
-//					}  // end if position is occupied by enemy      // currently unwritten
-					
-					console.draw(team0.getBasePositions(), team1.getBasePositions(), 
-							team0.getRegimentPositions(), team1.getRegimentPositions());
-					
-					if (sleep == true){
-					    Thread.sleep(Math.round((double) (150 * turnSpeed)/10));
-					}  // end if sleep == true
-										
-				}  // end if statement
+				}  // end if i <= myTeam.regimentList.size
 				
-//				if (isGameOver() == false) {
-//					
-//				} else {
-//					gameOver = true;
-//				}
+			}  // end for loop (BoardBuilder.REGIMENTS_PER_TEAM)
+			
+			if (oneTurnAtATime) {
 				
-			}  // end for team in teamHolder
-			
-		}  // end for loop (BoardBuilder.REGIMENTS_PER_TEAM)
-		
-		if (oneTurnAtATime) {
-			
-			waitForEnter();
-			
-		}  // end if ifOneTurnAtATime == true
+				waitForEnter();
+				
+			}  // end if ifOneTurnAtATime == true
 		
 		} // end while gameOver == false
 		
