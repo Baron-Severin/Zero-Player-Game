@@ -25,9 +25,27 @@ public class UnitLocationList {
 	private ArrayList<PositionObject> basePositions = new ArrayList<PositionObject>();
 	private ArrayList<PredictionHolder> predictionHolders = new ArrayList<PredictionHolder>();
 	
+	public void generateBasePositions() {
+		
+		basePositions.clear();
+		
+		for (int i = 0; i < ourBases.size(); i++) {
+			
+			PositionObject setBase = ourBases.get(i).getPositionObject();
+			
+			basePositions.add(setBase);
+			
+		}
+		
+	}  // end generateBasePositions
+	
+	public ArrayList<Base> getOurBases() {
+		return this.ourBases;
+	}  // end getOurBases
+	
 	public ArrayList<Regiment> getRegimentList() {
 		return regimentList;
-	}  // end getregimentList
+	}  // end getRegimentList
 	
 	public Regiment getRegimentByIndex(int index) {
 		Regiment regiment = this.regimentList.get(index);
@@ -124,37 +142,52 @@ public class UnitLocationList {
 		
 	}  // end attackPosition
 	
+//	public void removeUnit(Regiment regiment) {
+//		
+//		if (!regimentList.contains(regiment)) {
+//			
+//		    System.out.println("Error: Regiment passed to UnitLocationList " + this 
+//		    		+ ".removeUnit not found within regimentList");
+//		    new Exception().printStackTrace();
+//		    
+//		}  else {
+//			
+//			if (this.team == 0) {
+//				
+//				System.out.println("Team: 0, Position: " 
+//				+ regiment.getPositionObject().getPositionString());
+//				
+//				team0RegimentLocations.remove(regiment.getNumber());
+//				
+//			} else if (this.team == 1) {
+//				
+//				System.out.println("Team: 1, Position: " 
+//						+ regiment.getPositionObject().getPositionString());
+//				
+//                team1RegimentLocations.remove(regiment.getNumber());
+//			}  // end if statement
+//			
+//			int index = regimentList.indexOf(regiment);
+//			regimentList.remove(regiment);
+//			regimentPositions.remove(index);
+//			regiment = null;
+//			
+//		}  // end if statement
+//		
+//	}  // end removeUnit
+	
 	public void removeUnit(Regiment regiment) {
 		
-		if (!regimentList.contains(regiment)) {
-			
-		    System.out.println("Error: Regiment passed to UnitLocationList " + this 
-		    		+ ".removeUnit not found within regimentList");
-		    new Exception().printStackTrace();
-		    
-		}  else {
-			
-			if (this.team == 0) {
-				
-				System.out.println("Team: 0, Position: " 
-				+ regiment.getPositionObject().getPositionString());
-				
-				team0RegimentLocations.remove(regiment.getNumber());
-				
-			} else if (this.team == 1) {
-				
-				System.out.println("Team: 1, Position: " 
-						+ regiment.getPositionObject().getPositionString());
-				
-                team1RegimentLocations.remove(regiment.getNumber());
-			}  // end if statement
-			
-			int index = regimentList.indexOf(regiment);
-			regimentList.remove(regiment);
-			regimentPositions.remove(index);
-			regiment = null;
-			
-		}  // end if statement
+		if (regiment.isUnitDead()){
+		
+		    PositionObject youDead = new PositionObject(-9999, 9999);
+		
+		    this.moveUnit(regiment, youDead);
+		
+		} else {
+			System.out.println("UnitLocationList.removeUnit given invalid argument: Team" 
+		        + regiment.getTeam() + " Regiment" + regiment.getNumber() + "is not dead");
+		}
 		
 	}  // end removeUnit
 	

@@ -4,6 +4,7 @@ import java.io.Console;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import zeroPlayerGamePackage.Base;
 import zeroPlayerGamePackage.BoardBuilder;
 import zeroPlayerGamePackage.PredictionHolder;
 import zeroPlayerGamePackage.Regiment;
@@ -18,14 +19,14 @@ public class GameManager {
 	// true to play normally
 	public static final boolean sleep = true;
 	public static final boolean animateInConsole = true;
-	public static final long turnSpeed = 10;  // default == 10
+	public static final long turnSpeed = 4;  // default == 10
 	
 	// false to play normally
 	public static final boolean printPositionValues = false;
 	public static final boolean oneTurnAtATime = false;
 	public static final boolean printGenerateTowardsObjectivesScore = false;
 	public static final boolean printTowardsObjectivesComponents = false;
-	public static final boolean logActiveRegiments = true;
+	public static final boolean logActiveRegiments = false;
 	/* End Visual / Debug Options */
 
 	public static void main(String[] args) throws InterruptedException {
@@ -131,7 +132,7 @@ public class GameManager {
 						enemyTeam = team0;
 					}  // end if statement
 				
-					if (i < myTeam.regimentList.size()) {
+					if (!(myTeam.regimentList.get(i).isUnitDead())) {
 						
 						Regiment regiment = myTeam.getRegimentByIndex(i);
 						
@@ -158,15 +159,44 @@ public class GameManager {
 												
 						}  // end if statement
 						
-		//				if (isGameOver() == false) {
-		//					
-		//				} else {
-		//					gameOver = true;
-		//				}
+						PositionObject regimentPosition = regiment.getPositionObject();
 						
-					}  // end for team in teamHolder
+						for (int bi = 0; bi < enemyTeam.getOurBases().size(); bi++) {
+							
+							Base checkBase = enemyTeam.getOurBases().get(bi);
+							
+							if (checkBase.getPositionObject().positionEquality(regimentPosition)) {
+								
+								checkBase.setPosition(-9999, -9999);
+								
+//								team0Bases = team0.getBasePositions();
+//								ArrayList<PositionObject> team1Bases = team1.getBasePositions();
+								
+								enemyTeam.generateBasePositions();
+								
+							}  // if base position == unit position
+							
+						}  // for pos in team
+                        	
+                        	if (team0.getBasePositions().get(0).getPositionX() == -9999
+                        			&& team0.getBasePositions().get(1).getPositionX() == -9999
+                        			&& team0.getBasePositions().get(2).getPositionX() == -9999) {
+                        	
+                        		gameOver = true;
+                        		
+                            }  // end if all base0s are dead
+                        	
+                        	if (team1.getBasePositions().get(0).getPositionX() == -9999
+                        			&& team1.getBasePositions().get(1).getPositionX() == -9999
+                        			&& team1.getBasePositions().get(2).getPositionX() == -9999) {
+                        		
+                        		gameOver = true;
+                        		
+                        	}
+                        	
+					}  // end if unit is alive
 					
-				}  // end if i <= myTeam.regimentList.size
+				}  // end for loop (team in teamHolder)
 				
 			}  // end for loop (BoardBuilder.REGIMENTS_PER_TEAM)
 			
@@ -180,7 +210,7 @@ public class GameManager {
 		
 	}  // end main
 	
-	public static void waitForEnter() {
+	private static void waitForEnter() {
 	    System.out.println("Press Enter to continue");
 	    try { System.in.read(); }
 	    catch (Exception e) {

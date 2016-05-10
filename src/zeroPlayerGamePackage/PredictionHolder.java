@@ -482,52 +482,58 @@ public class PredictionHolder {
 	
 	private double compareHealthToEnemy(Regiment enemyRegiment) {
 		
-		int healthSum = regiment.health + enemyRegiment.health;
-		double healthGoodRatio = regiment.health / healthSum;
-		String fuzzyHealthDifferential;
+		if (enemyRegiment.health > 0) {
 		
-		if (healthGoodRatio > .66) {
-			fuzzyHealthDifferential = "high";
-		} else if (healthGoodRatio > .45) {
-			fuzzyHealthDifferential = "medium";
-		} else if (healthGoodRatio > .25) {
-			fuzzyHealthDifferential = "low";
-		} else {
-			fuzzyHealthDifferential = "critical";
-		}
+			int healthSum = regiment.health + enemyRegiment.health;
+			double healthGoodRatio = regiment.health / healthSum;
+			String fuzzyHealthDifferential;
+			
+			if (healthGoodRatio > .66) {
+				fuzzyHealthDifferential = "high";
+			} else if (healthGoodRatio > .45) {
+				fuzzyHealthDifferential = "medium";
+			} else if (healthGoodRatio > .25) {
+				fuzzyHealthDifferential = "low";
+			} else {
+				fuzzyHealthDifferential = "critical";
+			}
+			
+			if (regiment.getFuzzyMorale().equals("high") && !(fuzzyHealthDifferential.equals("critical"))) {
+				return 15;
+			} else if (regiment.getFuzzyMorale().equals("high")) {
+				return 5;
+			} else if (regiment.getFuzzyMorale().equals("medium") && fuzzyHealthDifferential.equals("high")) {
+				return 8;
+			} else if (regiment.getFuzzyMorale().equals("medium") && fuzzyHealthDifferential.equals("medium")) {
+				return 4;
+			} else if (regiment.getFuzzyMorale().equals("medium") && fuzzyHealthDifferential.equals("low")) {
+				return 0;
+			} else if (regiment.getFuzzyMorale().equals("medium") && fuzzyHealthDifferential.equals("critical")) {
+				return -4;
+			} else if (regiment.getFuzzyMorale().equals("low") && fuzzyHealthDifferential.equals("high")) {
+				return 6;
+			} else if (regiment.getFuzzyMorale().equals("low") && fuzzyHealthDifferential.equals("medium")) {
+				return 2;
+			} else if (regiment.getFuzzyMorale().equals("low") && fuzzyHealthDifferential.equals("low")) {
+				return -2;
+			} else if (regiment.getFuzzyMorale().equals("low") && fuzzyHealthDifferential.equals("critical")) {
+				return -6;
+			} else if (regiment.getFuzzyMorale().equals("critical") && fuzzyHealthDifferential.equals("high")) {
+				return 2;
+			} else if (regiment.getFuzzyMorale().equals("critical") && fuzzyHealthDifferential.equals("medium")) {
+				return -6;
+			} else if (regiment.getFuzzyMorale().equals("critical")) {
+				return -10;
+			} else {
+				System.out.println("PredictionHolder.compareHealthToEnemy has failed to meet any of "
+						+ "its conditions");
+				new Exception().printStackTrace();
+				return 9999;
+			}
+			
+		}  // end if enemyRegiment is alive
 		
-		if (regiment.getFuzzyMorale().equals("high") && !(fuzzyHealthDifferential.equals("critical"))) {
-			return 15;
-		} else if (regiment.getFuzzyMorale().equals("high")) {
-			return 5;
-		} else if (regiment.getFuzzyMorale().equals("medium") && fuzzyHealthDifferential.equals("high")) {
-			return 8;
-		} else if (regiment.getFuzzyMorale().equals("medium") && fuzzyHealthDifferential.equals("medium")) {
-			return 4;
-		} else if (regiment.getFuzzyMorale().equals("medium") && fuzzyHealthDifferential.equals("low")) {
-			return 0;
-		} else if (regiment.getFuzzyMorale().equals("medium") && fuzzyHealthDifferential.equals("critical")) {
-			return -4;
-		} else if (regiment.getFuzzyMorale().equals("low") && fuzzyHealthDifferential.equals("high")) {
-			return 6;
-		} else if (regiment.getFuzzyMorale().equals("low") && fuzzyHealthDifferential.equals("medium")) {
-			return 2;
-		} else if (regiment.getFuzzyMorale().equals("low") && fuzzyHealthDifferential.equals("low")) {
-			return -2;
-		} else if (regiment.getFuzzyMorale().equals("low") && fuzzyHealthDifferential.equals("critical")) {
-			return -6;
-		} else if (regiment.getFuzzyMorale().equals("critical") && fuzzyHealthDifferential.equals("high")) {
-			return 2;
-		} else if (regiment.getFuzzyMorale().equals("critical") && fuzzyHealthDifferential.equals("medium")) {
-			return -6;
-		} else if (regiment.getFuzzyMorale().equals("critical")) {
-			return -10;
-		} else {
-			System.out.println("PredictionHolder.compareHealthToEnemy has failed to meet any of "
-					+ "its conditions");
-			new Exception().printStackTrace();
-			return 9999;
-		}
+		return 0;
 		
 	}  // end compareHealthToEnemy
 	
